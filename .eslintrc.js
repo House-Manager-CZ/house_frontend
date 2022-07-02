@@ -3,7 +3,12 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["plugin:react/recommended", "airbnb", "plugin:prettier/recommended", "prettier"],
+  extends: [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:prettier/recommended",
+    "prettier",
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
@@ -26,7 +31,10 @@ module.exports = {
   },
   rules: {
     "prettier/prettier": "error",
-    "react/jsx-curly-brace-presence": ["error", { props: "always", children: "never" }],
+    "react/jsx-curly-brace-presence": [
+      "error",
+      { props: "always", children: "never" },
+    ],
     "no-restricted-imports": [
       "error",
       {
@@ -34,6 +42,12 @@ module.exports = {
       },
     ],
     "no-use-before-define": "off",
+    "@typescript-eslint/array-type": [
+      "error",
+      {
+        default: "generic",
+      },
+    ],
     "@typescript-eslint/naming-convention": [
       "error",
       {
@@ -49,7 +63,10 @@ module.exports = {
     ],
     "no-unused-vars": "warn",
     "import/prefer-default-export": "off",
-    "react/jsx-filename-extension": [2, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/jsx-filename-extension": [
+      2,
+      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
+    ],
     "react/function-component-definition": [
       2,
       {
