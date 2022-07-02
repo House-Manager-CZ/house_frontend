@@ -41,7 +41,10 @@ module.exports = {
         patterns: ["@mui/*/*/*", "!@mui/material/test-utils/*"],
       },
     ],
+    "no-param-reassign": [2, { props: false }],
+    "no-shadow": "off",
     "no-use-before-define": "off",
+    "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/array-type": [
       "error",
       {
