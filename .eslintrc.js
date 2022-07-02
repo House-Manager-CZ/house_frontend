@@ -3,66 +3,68 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-  ],
-  parser: '@typescript-eslint/parser',
+  extends: ["plugin:react/recommended", "airbnb", "plugin:prettier/recommended", "prettier"],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+    ecmaVersion: "latest",
+    sourceType: "module",
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-  ],
+  plugins: ["react", "@typescript-eslint", "prettier"],
   settings: {
-    'import/extensions': [
-      '.js',
-      '.jsx',
-      '.ts',
-      '.tsx',
-    ],
-    'import/resolver': {
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/resolver": {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
       },
     },
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"],
     },
   },
   rules: {
-    'react/jsx-curly-brace-presence': [
-      'error',
-      { props: 'always', children: 'never' },
-    ],
-    'no-restricted-imports': [
-      'error',
+    "prettier/prettier": "error",
+    "react/jsx-curly-brace-presence": ["error", { props: "always", children: "never" }],
+    "no-restricted-imports": [
+      "error",
       {
-        patterns: ['@mui/*/*/*', '!@mui/material/test-utils/*'],
+        patterns: ["@mui/*/*/*", "!@mui/material/test-utils/*"],
       },
     ],
-    'import/prefer-default-export': 'off',
-    'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
-    'react/function-component-definition': [
+    "no-use-before-define": "off",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        selector: "typeAlias",
+        format: ["PascalCase"],
+        prefix: ["T"],
+      },
+      {
+        selector: "interface",
+        format: ["PascalCase"],
+        prefix: ["I"],
+      },
+    ],
+    "no-unused-vars": "warn",
+    "import/prefer-default-export": "off",
+    "react/jsx-filename-extension": [2, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/function-component-definition": [
       2,
       {
-        namedComponents: 'arrow-function',
-        unnamedComponents: 'arrow-function',
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
       },
     ],
-    'import/extensions': [
-      'error',
-      'ignorePackages',
+    "import/extensions": [
+      "error",
+      "ignorePackages",
       {
-        js: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
       },
     ],
   },

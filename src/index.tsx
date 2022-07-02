@@ -9,7 +9,7 @@ import store from './redux/store';
 import mainTheme from './helpers/theme/mainTheme';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
@@ -18,7 +18,7 @@ root.render(
         <App />
       </Provider>
     </ThemeProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
