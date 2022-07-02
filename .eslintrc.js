@@ -36,6 +36,17 @@ module.exports = {
     },
   },
   rules: {
+    'react/jsx-curly-brace-presence': [
+      'error',
+      { props: 'always', children: 'never' },
+    ],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: ['@mui/*/*/*', '!@mui/material/test-utils/*'],
+      },
+    ],
+    'import/prefer-default-export': 'off',
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/function-component-definition': [
       2,
