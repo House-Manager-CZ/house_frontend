@@ -6,6 +6,7 @@ import {
 } from "./DashboardWrapper.types";
 
 const useDashboardWrapper = (
+  // eslint-disable-next-line no-unused-vars
   props: TDashboardWrapperProps
 ): TDashboardWrapperHook => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(true);
