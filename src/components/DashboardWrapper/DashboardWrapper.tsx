@@ -15,7 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Apartment, Settings } from "@mui/icons-material";
-import useDashboardWrapper from "./useDashboardWrapper";
 import { TRootState } from "../../redux/store";
 import { isLoggedInSelector } from "../../redux/user/selectors";
 import {
@@ -33,7 +32,6 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   props: TDashboardWrapperProps
 ): React.ReactElement => {
   const { isLogged } = props;
-  useDashboardWrapper(props);
 
   if (!isLogged) return <Navigate to={"/auth/login"} />;
 
