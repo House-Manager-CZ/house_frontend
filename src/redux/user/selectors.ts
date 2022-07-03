@@ -1,9 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { TRootState } from "../store";
 import { moduleName } from "./module";
 import { TUserSchema } from "./types/user.schema";
 
-const userState = (state: TRootState) => state[moduleName];
+const userState = (state: any): TUserSchema => state[moduleName];
 
 export const accessTokenSelector = createSelector(
   userState,
@@ -26,6 +25,11 @@ export const isLoggedInSelector = createSelector(
     state.accessToken !== false &&
     state.refreshToken !== false &&
     state.expires !== false
+);
+
+export const isTokenExpiredSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.expires < Date.now()
 );
 
 export const loginRequestStartedSelector = createSelector(

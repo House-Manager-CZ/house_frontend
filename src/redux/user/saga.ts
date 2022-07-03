@@ -1,5 +1,5 @@
 import { SagaIterator } from "redux-saga";
-import { all, call, fork, put, takeLatest } from "redux-saga/effects";
+import { all, call, fork, put, select, takeLatest } from "redux-saga/effects";
 import { AxiosError } from "axios";
 import {
   runLogin,
@@ -18,6 +18,7 @@ import Api from "../../helpers/api/base";
 import { TApiLoginResponse } from "../../helpers/api/types/api.types";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/localStorage/consts";
 import { TApiError } from "../../helpers/api/types/error.types";
+import { isTokenExpiredSelector } from "./selectors";
 
 export function* userSaga(): SagaIterator<void> {
   yield all([
@@ -67,7 +68,9 @@ export function* initWorker(): SagaIterator<void> {
         put(setExpires(expires)),
       ]);
 
-      if (expires < Date.now()) yield call(refreshWorker);
+      const tokenExpired: boolean = yield select(isTokenExpiredSelector);
+
+      if (tokenExpired) yield call(refreshWorker);
     }
   } catch (error) {
     //
