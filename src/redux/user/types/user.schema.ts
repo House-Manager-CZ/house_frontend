@@ -8,9 +8,14 @@ export type TUserSchema = {
   refreshRequestStarted: boolean;
   refreshRequestFinished: boolean;
   refreshRequestError: string;
+  registerRequestStarted: boolean;
+  registerRequestFinished: boolean;
+  registerRequestError: string;
 };
 
 export type TFetchLoginAction = {
   email: string;
   password: string;
 };
+
+export type TFetchRegisterAction = TFetchLoginAction;

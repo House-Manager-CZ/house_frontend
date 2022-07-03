@@ -10,4 +10,7 @@ export const UserSchema: TUserSchema = {
   refreshRequestStarted: false,
   refreshRequestFinished: false,
   refreshRequestError: "",
+  registerRequestStarted: false,
+  registerRequestFinished: false,
+  registerRequestError: "",
 };

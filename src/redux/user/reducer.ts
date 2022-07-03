@@ -11,6 +11,9 @@ import {
   setRefreshRequestFinished,
   setRefreshRequestStarted,
   setRefreshToken,
+  setRegisterRequestError,
+  setRegisterRequestFinished,
+  setRegisterRequestStarted,
 } from "./action";
 
 export default createReducer(UserSchema, (builder) => {
@@ -42,5 +45,14 @@ export default createReducer(UserSchema, (builder) => {
     })
     .addCase(setRefreshRequestError, (state, action) => {
       state.refreshRequestError = action.payload;
+    })
+    .addCase(setRegisterRequestStarted, (state, action) => {
+      state.registerRequestStarted = action.payload;
+    })
+    .addCase(setRegisterRequestFinished, (state, action) => {
+      state.registerRequestFinished = action.payload;
+    })
+    .addCase(setRegisterRequestError, (state, action) => {
+      state.registerRequestError = action.payload;
     });
 });

@@ -99,3 +99,37 @@ export const refreshRequestFailedSelector = createSelector(
   (state: TUserSchema) =>
     !state.refreshRequestStarted && !!state.refreshRequestError
 );
+
+export const registerRequestStartedSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.registerRequestStarted
+);
+
+export const registerRequestFinishedSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.registerRequestFinished
+);
+
+export const registerRequestErrorSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.registerRequestError
+);
+
+export const registerRequestLoadingSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    state.registerRequestStarted &&
+    !(state.registerRequestFinished || state.registerRequestError)
+);
+
+export const registerRequestSuccessSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    !state.registerRequestStarted && state.registerRequestFinished
+);
+
+export const registerRequestFailedSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    !state.registerRequestStarted && !!state.registerRequestError
+);

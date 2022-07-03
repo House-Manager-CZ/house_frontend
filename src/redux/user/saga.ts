@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import {
   runLogin,
   runRefresh,
+  runRegister,
   setAccessToken,
   setExpires,
   setLoginRequestError,
@@ -13,6 +14,9 @@ import {
   setRefreshRequestFinished,
   setRefreshRequestStarted,
   setRefreshToken,
+  setRegisterRequestError,
+  setRegisterRequestFinished,
+  setRegisterRequestStarted,
 } from "./action";
 import Api from "../../helpers/api/main.api";
 import { TApiLoginResponse } from "../../helpers/api/types/api.types";
@@ -23,8 +27,9 @@ import { isTokenExpiredSelector } from "./selectors";
 export function* userSaga(): SagaIterator<void> {
   yield all([
     fork(initWatcher),
-    fork(refreshWatcher),
     fork(loginWatcher),
+    fork(refreshWatcher),
+    fork(registerWatcher),
     fork(tokenWatcher),
     fork(expiresWatcher),
   ]);
@@ -34,12 +39,16 @@ export function* initWatcher(): SagaIterator<void> {
   yield call(initWorker);
 }
 
+export function* loginWatcher(): SagaIterator<void> {
+  yield takeLatest(runLogin, loginWorker);
+}
+
 export function* refreshWatcher(): SagaIterator<void> {
   yield takeLatest(runRefresh, refreshWorker);
 }
 
-export function* loginWatcher(): SagaIterator<void> {
-  yield takeLatest(runLogin, loginWorker);
+export function* registerWatcher(): SagaIterator<void> {
+  yield takeLatest(runRegister, registerWorker);
 }
 
 export function* tokenWatcher(): SagaIterator<void> {
@@ -74,36 +83,6 @@ export function* initWorker(): SagaIterator<void> {
     }
   } catch (error) {
     //
-  }
-}
-
-export function* refreshWorker() {
-  yield all([
-    put(setRefreshRequestStarted(true)),
-    put(setRefreshRequestFinished(false)),
-    put(setRefreshRequestError("")),
-  ]);
-
-  try {
-    const refresh: TApiLoginResponse = yield Api.getInstance().auth.refresh();
-
-    yield all([
-      put(setAccessToken(refresh.accessToken)),
-      put(setRefreshToken(refresh.refreshToken)),
-      put(setExpires(Date.now() + refresh.expiresIn)),
-    ]);
-
-    yield put(setRefreshRequestFinished(true));
-  } catch (e: unknown) {
-    const error = <AxiosError<TApiError>>e;
-
-    yield put(
-      setRefreshRequestError(
-        error?.response?.data.message || "Something went wrong"
-      )
-    );
-  } finally {
-    yield put(setRefreshRequestStarted(false));
   }
 }
 
@@ -143,6 +122,77 @@ export function* loginWorker({ payload }: ReturnType<typeof runLogin>) {
     );
   } finally {
     yield put(setLoginRequestStarted(false));
+  }
+}
+
+export function* refreshWorker() {
+  yield all([
+    put(setRefreshRequestStarted(true)),
+    put(setRefreshRequestFinished(false)),
+    put(setRefreshRequestError("")),
+  ]);
+
+  try {
+    const refresh: TApiLoginResponse = yield Api.getInstance().auth.refresh();
+
+    yield all([
+      put(setAccessToken(refresh.accessToken)),
+      put(setRefreshToken(refresh.refreshToken)),
+      put(setExpires(Date.now() + refresh.expiresIn)),
+    ]);
+
+    yield put(setRefreshRequestFinished(true));
+  } catch (e: unknown) {
+    const error = <AxiosError<TApiError>>e;
+
+    yield put(
+      setRefreshRequestError(
+        error?.response?.data.message || "Something went wrong"
+      )
+    );
+  } finally {
+    yield put(setRefreshRequestStarted(false));
+  }
+}
+
+export function* registerWorker({ payload }: ReturnType<typeof runRegister>) {
+  yield all([
+    put(setRegisterRequestStarted(true)),
+    put(setRegisterRequestFinished(false)),
+    put(setRegisterRequestError("")),
+  ]);
+
+  try {
+    const register: TApiLoginResponse = yield Api.getInstance().auth.register(
+      payload
+    );
+
+    yield all([
+      put(setAccessToken(register.accessToken)),
+      put(setRefreshToken(register.refreshToken)),
+      put(setExpires(Date.now() + register.expiresIn)),
+    ]);
+
+    if (window.PasswordCredential) {
+      const credentials = new window.PasswordCredential({
+        id: payload.email,
+        password: payload.password,
+      });
+
+      yield navigator.credentials.store(credentials);
+    }
+
+    yield put(setRegisterRequestFinished(true));
+  } catch (e: unknown) {
+    const error = <AxiosError<TApiError>>e;
+
+    yield put(
+      setRegisterRequestError(
+        error?.response?.data.message || "Something went wrong"
+      )
+    );
+  } finally {
+    yield put(setRegisterRequestStarted(false));
   }
 }
 
