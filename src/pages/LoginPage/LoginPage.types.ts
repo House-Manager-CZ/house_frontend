@@ -2,6 +2,7 @@ import React from "react";
 import { FormikErrors } from "formik";
 
 export type TLoginPageStateProps = {
+  isLogged: boolean;
   loginRequestLoading: boolean;
   loginRequestError: string;
 };

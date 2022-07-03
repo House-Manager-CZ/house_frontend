@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Mail, VpnKey } from "@mui/icons-material";
+import { Navigate } from "react-router-dom";
 import { LoginCard, LoginCardTextField, LoginForm } from "./LoginPage.styled";
 import {
   TLoginPageDispatchProps,
@@ -22,6 +23,7 @@ import { TAppDispatch, TRootState } from "../../redux/store";
 import { runLogin } from "../../redux/user";
 import useLoginPage from "./useLoginPage";
 import {
+  isLoggedInSelector,
   loginRequestErrorSelector,
   loginRequestLoadingSelector,
 } from "../../redux/user/selectors";
@@ -29,10 +31,12 @@ import {
 const LoginPage: React.FC<TLoginPageProps> = (
   props: TLoginPageProps
 ): React.ReactElement => {
-  const { loginRequestLoading, loginRequestError } = props;
+  const { isLogged, loginRequestLoading, loginRequestError } = props;
 
   const { emailValue, passwordValue, errors, handleChange, handleSubmit } =
     useLoginPage(props);
+
+  if (isLogged) return <Navigate to={"/"} />;
 
   return (
     <LoginForm onSubmit={handleSubmit}>
@@ -107,6 +111,7 @@ const LoginPage: React.FC<TLoginPageProps> = (
 };
 
 const mapStateToProps = (state: TRootState): TLoginPageStateProps => ({
+  isLogged: isLoggedInSelector(state),
   loginRequestLoading: loginRequestLoadingSelector(state),
   loginRequestError: loginRequestErrorSelector(state),
 });
