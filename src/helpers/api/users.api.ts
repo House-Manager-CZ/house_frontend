@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TApiUser } from "./types/api.types";
+import { TApiUser } from "./types/entities.types";
 
 export class UsersApi {
   private axios: AxiosInstance;
