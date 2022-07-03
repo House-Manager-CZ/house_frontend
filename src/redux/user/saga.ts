@@ -14,7 +14,7 @@ import {
   setRefreshRequestStarted,
   setRefreshToken,
 } from "./action";
-import Api from "../../helpers/api/base";
+import Api from "../../helpers/api/main.api";
 import { TApiLoginResponse } from "../../helpers/api/types/api.types";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/localStorage/consts";
 import { TApiError } from "../../helpers/api/types/error.types";
