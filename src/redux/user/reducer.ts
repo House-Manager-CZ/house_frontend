@@ -7,6 +7,9 @@ import {
   setLoginRequestError,
   setLoginRequestFinished,
   setLoginRequestStarted,
+  setRefreshRequestError,
+  setRefreshRequestFinished,
+  setRefreshRequestStarted,
   setRefreshToken,
 } from "./action";
 
@@ -30,5 +33,14 @@ export default createReducer(UserSchema, (builder) => {
     })
     .addCase(setLoginRequestError, (state, action) => {
       state.loginRequestError = action.payload;
+    })
+    .addCase(setRefreshRequestStarted, (state, action) => {
+      state.refreshRequestStarted = action.payload;
+    })
+    .addCase(setRefreshRequestFinished, (state, action) => {
+      state.refreshRequestFinished = action.payload;
+    })
+    .addCase(setRefreshRequestError, (state, action) => {
+      state.refreshRequestError = action.payload;
     });
 });

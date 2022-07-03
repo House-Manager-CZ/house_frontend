@@ -61,3 +61,37 @@ export const loginRequestFailedSelector = createSelector(
   (state: TUserSchema) =>
     !state.loginRequestStarted && !!state.loginRequestError
 );
+
+export const refreshRequestStartedSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.refreshRequestStarted
+);
+
+export const refreshRequestFinishedSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.refreshRequestFinished
+);
+
+export const refreshRequestErrorSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.refreshRequestError
+);
+
+export const refreshRequestLoadingSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    state.refreshRequestStarted &&
+    !(state.refreshRequestFinished || state.refreshRequestError)
+);
+
+export const refreshRequestSuccessSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    !state.refreshRequestStarted && state.refreshRequestFinished
+);
+
+export const refreshRequestFailedSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    !state.refreshRequestStarted && !!state.refreshRequestError
+);

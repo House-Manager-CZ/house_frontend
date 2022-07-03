@@ -7,4 +7,7 @@ export const UserSchema: TUserSchema = {
   loginRequestStarted: false,
   loginRequestFinished: false,
   loginRequestError: "",
+  refreshRequestStarted: false,
+  refreshRequestFinished: false,
+  refreshRequestError: "",
 };

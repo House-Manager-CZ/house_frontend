@@ -17,4 +17,9 @@ export default class AuthApi {
     const response = await this.axios.post("/auth/login", data);
     return response.data;
   }
+
+  public async refresh(): Promise<TApiLoginResponse> {
+    const response = await this.axios.post("/auth/refresh");
+    return response.data;
+  }
 }
