@@ -120,6 +120,15 @@ export function* loginWorker({ payload }: ReturnType<typeof runLogin>) {
       put(setExpires(Date.now() + auth.expiresIn)),
     ]);
 
+    if (window.PasswordCredential) {
+      const credentials = new window.PasswordCredential({
+        id: payload.email,
+        password: payload.password,
+      });
+
+      yield navigator.credentials.store(credentials);
+    }
+
     yield put(setLoginRequestFinished(true));
   } catch (e: unknown) {
     const error = <AxiosError<TApiError>>e;

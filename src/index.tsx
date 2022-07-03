@@ -8,6 +8,36 @@ import store from "./redux/store";
 import mainTheme from "./helpers/theme/mainTheme";
 import App from "./components/App/App";
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  interface PasswordCredentialData {
+    id: string;
+    name?: string;
+    iconURL?: string;
+    password: string;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  interface PasswordCredentialConstructor extends Credential {
+    new (passwordCredentialData: PasswordCredentialData): PasswordCredential;
+    new (htmlFormElement: HTMLFormElement): PasswordCredential;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  interface PasswordCredential extends Credential {
+    readonly iconURL: string;
+    readonly password: string;
+    readonly name: string;
+  }
+
+  const PasswordCredential: PasswordCredentialConstructor;
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-unused-vars
+  interface Window {
+    PasswordCredential: PasswordCredentialConstructor;
+  }
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
