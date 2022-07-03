@@ -6,15 +6,15 @@ export const DashboardWrapperBox = styled(Box)({
   display: "flex",
 });
 
-export const DashboardAppBarStyled = styled(AppBar)({
+export const DashboardAppBarStyled = styled(AppBar)(({ theme }) => ({
   width: `calc(100% - ${drawerWidth}px)`,
   marginLeft: drawerWidth,
-});
 
-export const DashboardWrapperDrawerBox = styled(Box)({
-  width: drawerWidth,
-  flexShrink: 0,
-});
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    marginLeft: 0,
+  },
+}));
 
 export const DashboardDrawer = styled(Drawer)({
   display: "block",
