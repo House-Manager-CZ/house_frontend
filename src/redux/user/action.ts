@@ -6,6 +6,7 @@ export const ACTION_TYPES = {
   RUN_LOGIN: `${moduleName}/RUN_LOGIN`,
   SET_ACCESS_TOKEN: `${moduleName}/SET_ACCESS_TOKEN`,
   SET_REFRESH_TOKEN: `${moduleName}/SET_REFRESH_TOKEN`,
+  SET_EXPIRES: `${moduleName}/SET_EXPIRES`,
   SET_LOGIN_REQUEST_STARTED: `${moduleName}/SET_LOGIN_REQUEST_STARTED`,
   SET_LOGIN_REQUEST_FINISHED: `${moduleName}/SET_LOGIN_REQUEST_FINISHED`,
   SET_LOGIN_REQUEST_ERROR: `${moduleName}/SET_LOGIN_REQUEST_ERROR`,
@@ -20,6 +21,8 @@ export const setAccessToken = createAction<string>(
 export const setRefreshToken = createAction<string>(
   ACTION_TYPES.SET_REFRESH_TOKEN
 );
+
+export const setExpires = createAction<number>(ACTION_TYPES.SET_EXPIRES);
 
 export const setLoginRequestStarted = createAction<boolean>(
   ACTION_TYPES.SET_LOGIN_REQUEST_STARTED

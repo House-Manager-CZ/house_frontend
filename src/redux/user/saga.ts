@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import {
   runLogin,
   setAccessToken,
+  setExpires,
   setLoginRequestError,
   setLoginRequestFinished,
   setLoginRequestStarted,
@@ -40,6 +41,7 @@ export function* loginWorker({ payload }: ReturnType<typeof runLogin>) {
     yield all([
       put(setAccessToken(auth.accessToken)),
       put(setRefreshToken(auth.refreshToken)),
+      put(setExpires(Date.now() + auth.expiresIn)),
     ]);
 
     yield put(setLoginRequestFinished(true));
@@ -75,4 +77,12 @@ export function* tokensWorker({
       payload
     );
   }
+}
+
+export function* expiresWorker({ payload }: ReturnType<typeof setExpires>) {
+  yield call(
+    [localStorage, localStorage.setItem],
+    LOCAL_STORAGE_KEYS.EXPIRES,
+    `${payload}`
+  );
 }

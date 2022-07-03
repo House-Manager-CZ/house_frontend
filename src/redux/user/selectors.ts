@@ -15,6 +15,19 @@ export const refreshTokenSelector = createSelector(
   (state: TUserSchema) => state.refreshToken
 );
 
+export const expiresSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.expires
+);
+
+export const isLoggedInSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    state.accessToken !== false &&
+    state.refreshToken !== false &&
+    state.expires !== false
+);
+
 export const loginRequestStartedSelector = createSelector(
   userState,
   (state: TUserSchema) => state.loginRequestStarted

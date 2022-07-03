@@ -3,6 +3,7 @@ import { UserSchema } from "./schema";
 import {
   runLogin,
   setAccessToken,
+  setExpires,
   setLoginRequestError,
   setLoginRequestFinished,
   setLoginRequestStarted,
@@ -17,6 +18,9 @@ export default createReducer(UserSchema, (builder) => {
     })
     .addCase(setRefreshToken, (state, action) => {
       state.refreshToken = action.payload;
+    })
+    .addCase(setExpires, (state, action) => {
+      state.expires = action.payload;
     })
     .addCase(setLoginRequestStarted, (state, action) => {
       state.loginRequestStarted = action.payload;
