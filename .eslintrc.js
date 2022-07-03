@@ -42,6 +42,7 @@ module.exports = {
         patterns: ["@mui/*/*/*", "!@mui/material/test-utils/*"],
       },
     ],
+    camelcase: ["error", { properties: "never", ignoreDestructuring: true }],
     "no-param-reassign": [2, { props: false }],
     "no-shadow": "off",
     "no-use-before-define": "off",
