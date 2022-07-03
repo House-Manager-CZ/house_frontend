@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Mail, VpnKey } from "@mui/icons-material";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { LoginCard, LoginCardTextField, LoginForm } from "./LoginPage.styled";
 import {
   TLoginPageDispatchProps,
@@ -20,13 +20,13 @@ import {
   TLoginPageStateProps,
 } from "./LoginPage.types";
 import { TAppDispatch, TRootState } from "../../redux/store";
-import { runLogin } from "../../redux/user";
-import useLoginPage from "./useLoginPage";
 import {
   isLoggedInSelector,
   loginRequestErrorSelector,
   loginRequestLoadingSelector,
-} from "../../redux/user/selectors";
+  runLogin,
+} from "../../redux/user";
+import useLoginPage from "./useLoginPage";
 
 const LoginPage: React.FC<TLoginPageProps> = (
   props: TLoginPageProps
@@ -35,6 +35,8 @@ const LoginPage: React.FC<TLoginPageProps> = (
 
   const { emailValue, passwordValue, errors, handleChange, handleSubmit } =
     useLoginPage(props);
+
+  const navigate = useNavigate();
 
   if (isLogged) return <Navigate to={"/"} />;
 
@@ -99,7 +101,12 @@ const LoginPage: React.FC<TLoginPageProps> = (
           </Stack>
         </CardContent>
         <CardActions>
-          <Button>Register</Button>
+          <Button
+            onClick={() => navigate("/auth/register")}
+            disabled={loginRequestLoading}
+          >
+            Register
+          </Button>
           <Box flexGrow={1} />
           <Button disabled={loginRequestLoading} type={"submit"}>
             Login
