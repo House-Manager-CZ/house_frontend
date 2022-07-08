@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import { AppBox } from "./App.styled";
-import ChooseHomePage from "../../pages/ChooseHomePage/ChooseHomePage";
+import ChooseHousePage from "../../pages/ChooseHousePage/ChooseHousePage";
 import DashboardWrapper from "../DashboardWrapper/DashboardWrapper";
 
 const App = () => (
@@ -15,7 +15,7 @@ const App = () => (
           <Route path={"register"} element={<RegisterPage />} />
         </Route>
         <Route path={"/"} element={<DashboardWrapper />}>
-          <Route path={"choose-home"} element={<ChooseHomePage />} />
+          <Route path={"choose-house"} element={<ChooseHousePage />} />
         </Route>
       </Routes>
     </AppBox>

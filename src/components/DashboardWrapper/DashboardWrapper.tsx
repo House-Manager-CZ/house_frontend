@@ -49,8 +49,8 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
 
   if (!isLogged) return <Navigate to={"/auth/login"} />;
 
-  if (!selectedHouseId && location.pathname !== "/choose-home")
-    return <Navigate to={"/choose-home"} />;
+  if (!selectedHouseId && location.pathname !== "/choose-house")
+    return <Navigate to={"/choose-house"} />;
 
   return (
     <DashboardWrapperBox>
