@@ -25,6 +25,8 @@ import {
 } from "./DashboardWrapper.types";
 import {
   DashboardAppBarStyled,
+  DashboardContainer,
+  DashboardContainerToolbar,
   DashboardDrawer,
   DashboardWrapperBox,
 } from "./DashboardWrapper.styled";
@@ -70,6 +72,7 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
       </DashboardAppBarStyled>
       <DashboardDrawer
         variant={smDownBreakpoint ? "temporary" : "permanent"}
+        anchor={"left"}
         open={isDrawerOpen}
         onClose={handleDrawerClose}
       >
@@ -91,7 +94,10 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
           </ListItem>
         </List>
       </DashboardDrawer>
-      <Outlet />
+      <DashboardContainer>
+        <DashboardContainerToolbar />
+        <Outlet />
+      </DashboardContainer>
     </DashboardWrapperBox>
   );
 };
