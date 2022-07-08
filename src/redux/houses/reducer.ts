@@ -6,6 +6,7 @@ import {
   setHousesRequestError,
   setHousesRequestFinished,
   setHousesRequestStarted,
+  setSelectedHouseId,
 } from "./actions";
 
 export default createReducer(HousesSchema, (builder) => {
@@ -15,6 +16,9 @@ export default createReducer(HousesSchema, (builder) => {
     })
     .addCase(setHouses, (state, action) => {
       state.houses = action.payload;
+    })
+    .addCase(setSelectedHouseId, (state, action) => {
+      state.selectedHouseId = action.payload;
     })
     .addCase(setHousesRequestStarted, (state, action) => {
       state.getHousesRequestStarted = action.payload;

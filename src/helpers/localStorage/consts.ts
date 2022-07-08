@@ -3,4 +3,5 @@ export enum LOCAL_STORAGE_KEYS {
   REFRESH_TOKEN = "refreshToken",
   EXPIRES = "expires",
   USER_DATA = "userData",
+  SELECTED_HOUSE_ID = "selectedHouseId",
 }

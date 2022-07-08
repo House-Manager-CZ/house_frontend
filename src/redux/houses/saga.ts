@@ -7,17 +7,34 @@ import {
   setHousesRequestError,
   setHousesRequestFinished,
   setHousesRequestStarted,
+  setSelectedHouseId,
 } from "./actions";
 import { TApiError } from "../../helpers/api/types/error.types";
 import Api from "../../helpers/api/main.api";
 import { TApiHouse } from "../../helpers/api/types/entities.types";
 import { isLoggedInSelector, isTokenExpiredSelector } from "../user";
 import { waitFor } from "../../helpers/saga/effects";
+import { LOCAL_STORAGE_KEYS } from "../../helpers/localStorage/consts";
 
 export function* housesSaga(): SagaIterator<void> {
-  yield all([fork(fetchHousesWatcher)]);
+  yield all([fork(initSaga), fork(fetchHousesWatcher)]);
+}
 
+export function* initSaga() {
   yield put(runHousesRequest());
+
+  try {
+    const selectedHouseId: string | false = yield call(
+      [localStorage, localStorage.getItem],
+      LOCAL_STORAGE_KEYS.SELECTED_HOUSE_ID
+    ) || false;
+
+    if (selectedHouseId) {
+      yield put(setSelectedHouseId(selectedHouseId));
+    }
+  } catch (e: unknown) {
+    //
+  }
 }
 
 export function* fetchHousesWatcher(): SagaIterator<void> {
