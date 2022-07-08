@@ -17,7 +17,11 @@ import { waitFor } from "../../helpers/saga/effects";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/localStorage/consts";
 
 export function* housesSaga(): SagaIterator<void> {
-  yield all([fork(initSaga), fork(fetchHousesWatcher)]);
+  yield all([
+    fork(initSaga),
+    fork(fetchHousesWatcher),
+    fork(setSelectedHouseWatcher),
+  ]);
 }
 
 export function* initSaga() {
@@ -39,6 +43,10 @@ export function* initSaga() {
 
 export function* fetchHousesWatcher(): SagaIterator<void> {
   yield takeLatest(runHousesRequest, fetchHousesWorker);
+}
+
+export function* setSelectedHouseWatcher(): SagaIterator<void> {
+  yield takeLatest(setSelectedHouseId, setSelectedHouseWorker);
 }
 
 export function* fetchHousesWorker() {
@@ -68,4 +76,14 @@ export function* fetchHousesWorker() {
   } finally {
     yield put(setHousesRequestStarted(false));
   }
+}
+
+export function* setSelectedHouseWorker({
+  payload,
+}: ReturnType<typeof setSelectedHouseId>): SagaIterator<void> {
+  yield call(
+    [localStorage, localStorage.setItem],
+    LOCAL_STORAGE_KEYS.SELECTED_HOUSE_ID,
+    payload
+  );
 }
