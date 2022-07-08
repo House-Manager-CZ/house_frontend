@@ -1,5 +1,6 @@
 export type TDashboardWrapperStateProps = {
   isLogged: boolean;
+  selectedHouseId: string | false;
 };
 
 export type TDashboardWrapperDispatchProps = {};

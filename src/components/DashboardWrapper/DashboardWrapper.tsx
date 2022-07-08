@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { Apartment, Menu, Settings } from "@mui/icons-material";
 import { TRootState } from "../../redux/store";
-import { isLoggedInSelector } from "../../redux/user/selectors";
+import { isLoggedInSelector } from "../../redux/user";
 import {
   TDashboardWrapperProps,
   TDashboardWrapperStateProps,
@@ -29,11 +29,14 @@ import {
   DashboardWrapperBox,
 } from "./DashboardWrapper.styled";
 import useDashboardWrapper from "./useDashboardWrapper";
+import { selectedHouseIdSelector } from "../../redux/houses";
 
 const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   props: TDashboardWrapperProps
 ): React.ReactElement => {
-  const { isLogged } = props;
+  const { isLogged, selectedHouseId } = props;
+
+  const location = useLocation();
 
   const { isDrawerOpen, handleMenuIconClick, handleDrawerClose } =
     useDashboardWrapper(props);
@@ -43,6 +46,9 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   );
 
   if (!isLogged) return <Navigate to={"/auth/login"} />;
+
+  if (!selectedHouseId && location.pathname !== "/choose-home")
+    return <Navigate to={"/choose-home"} />;
 
   return (
     <DashboardWrapperBox>
@@ -92,6 +98,7 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
 
 const mapStateToProps = (state: TRootState): TDashboardWrapperStateProps => ({
   isLogged: isLoggedInSelector(state),
+  selectedHouseId: selectedHouseIdSelector(state),
 });
 
 export default connect(mapStateToProps)(DashboardWrapper);
