@@ -2,11 +2,15 @@ import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, select, takeLatest } from "redux-saga/effects";
 import { AxiosError } from "axios";
 import {
+  runGetMeInfo,
   runLogin,
   runRefresh,
   runRegister,
   setAccessToken,
   setExpires,
+  setGetMeInfoRequestError,
+  setGetMeInfoRequestFinished,
+  setGetMeInfoRequestStarted,
   setLoginRequestError,
   setLoginRequestFinished,
   setLoginRequestStarted,
@@ -17,12 +21,16 @@ import {
   setRegisterRequestError,
   setRegisterRequestFinished,
   setRegisterRequestStarted,
+  setUserInfo,
 } from "./action";
 import Api from "../../helpers/api/main.api";
 import { TApiLoginResponse } from "../../helpers/api/types/api.types";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/localStorage/consts";
 import { TApiError } from "../../helpers/api/types/error.types";
-import { isTokenExpiredSelector } from "./selectors";
+import { isLoggedInSelector, isTokenExpiredSelector } from "./selectors";
+import { checkUserData } from "../../helpers/user";
+import { TApiUser } from "../../helpers/api/types/entities.types";
+import { waitFor } from "../../helpers/saga/effects";
 
 export function* userSaga(): SagaIterator<void> {
   yield all([
@@ -32,6 +40,7 @@ export function* userSaga(): SagaIterator<void> {
     fork(registerWatcher),
     fork(tokenWatcher),
     fork(expiresWatcher),
+    fork(getMeInfoWatcher),
   ]);
 }
 
@@ -60,6 +69,10 @@ export function* expiresWatcher(): SagaIterator<void> {
   yield takeLatest(setExpires, expiresWorker);
 }
 
+export function* getMeInfoWatcher(): SagaIterator<void> {
+  yield takeLatest(runGetMeInfo, getMeInfoWorker);
+}
+
 export function* initWorker(): SagaIterator<void> {
   try {
     const accessToken =
@@ -80,6 +93,17 @@ export function* initWorker(): SagaIterator<void> {
       const tokenExpired: boolean = yield select(isTokenExpiredSelector);
 
       if (tokenExpired) yield call(refreshWorker);
+    }
+
+    yield call(waitFor, isLoggedInSelector);
+
+    const userData =
+      localStorage.getItem(LOCAL_STORAGE_KEYS.USER_DATA) || false;
+
+    if (userData && checkUserData(JSON.parse(userData))) {
+      yield put(setUserInfo(JSON.parse(userData)));
+    } else {
+      yield put(runGetMeInfo());
     }
   } catch (error) {
     //
@@ -150,6 +174,12 @@ export function* refreshWorker() {
         error?.response?.data.message || "Something went wrong"
       )
     );
+
+    yield all([
+      put(setAccessToken(false)),
+      put(setRefreshToken(false)),
+      put(setExpires(false)),
+    ]);
   } finally {
     yield put(setRefreshRequestStarted(false));
   }
@@ -202,14 +232,14 @@ export function* tokensWorker({
 }: ReturnType<
   typeof setAccessToken | typeof setRefreshToken
 >): SagaIterator<void> {
-  if (type === setAccessToken.type) {
+  if (type === setAccessToken.type && payload !== false) {
     yield call(
       [localStorage, localStorage.setItem],
       LOCAL_STORAGE_KEYS.ACCESS_TOKEN,
       payload
     );
     Api.getInstance().setAccessToken(payload);
-  } else if (type === setRefreshToken.type) {
+  } else if (type === setRefreshToken.type && payload !== false) {
     yield call(
       [localStorage, localStorage.setItem],
       LOCAL_STORAGE_KEYS.REFRESH_TOKEN,
@@ -225,4 +255,37 @@ export function* expiresWorker({ payload }: ReturnType<typeof setExpires>) {
     LOCAL_STORAGE_KEYS.EXPIRES,
     `${payload}`
   );
+}
+
+export function* getMeInfoWorker() {
+  yield all([
+    put(setGetMeInfoRequestStarted(true)),
+    put(setGetMeInfoRequestFinished(false)),
+    put(setGetMeInfoRequestError("")),
+  ]);
+
+  try {
+    const meInfo: TApiUser = yield Api.getInstance().users.getMe();
+
+    yield all([
+      call(
+        [localStorage, localStorage.setItem],
+        LOCAL_STORAGE_KEYS.USER_DATA,
+        JSON.stringify(meInfo)
+      ),
+      put(setUserInfo(meInfo)),
+    ]);
+
+    yield put(setGetMeInfoRequestFinished(true));
+  } catch (e: unknown) {
+    const error = <AxiosError<TApiError>>e;
+
+    yield put(
+      setRegisterRequestError(
+        error?.response?.data.message || "Something went wrong"
+      )
+    );
+  } finally {
+    yield put(setGetMeInfoRequestStarted(false));
+  }
 }

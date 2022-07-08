@@ -1,9 +1,15 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { UserSchema } from "./schema";
 import {
+  runGetMeInfo,
   runLogin,
+  runRefresh,
+  runRegister,
   setAccessToken,
   setExpires,
+  setGetMeInfoRequestError,
+  setGetMeInfoRequestFinished,
+  setGetMeInfoRequestStarted,
   setLoginRequestError,
   setLoginRequestFinished,
   setLoginRequestStarted,
@@ -14,11 +20,15 @@ import {
   setRegisterRequestError,
   setRegisterRequestFinished,
   setRegisterRequestStarted,
+  setUserInfo,
 } from "./action";
 
 export default createReducer(UserSchema, (builder) => {
   builder
     .addCase(runLogin, () => {})
+    .addCase(runRefresh, () => {})
+    .addCase(runRegister, () => {})
+    .addCase(runGetMeInfo, () => {})
     .addCase(setAccessToken, (state, action) => {
       state.accessToken = action.payload;
     })
@@ -27,6 +37,9 @@ export default createReducer(UserSchema, (builder) => {
     })
     .addCase(setExpires, (state, action) => {
       state.expires = action.payload;
+    })
+    .addCase(setUserInfo, (state, action) => {
+      state.userInfo = action.payload;
     })
     .addCase(setLoginRequestStarted, (state, action) => {
       state.loginRequestStarted = action.payload;
@@ -54,5 +67,14 @@ export default createReducer(UserSchema, (builder) => {
     })
     .addCase(setRegisterRequestError, (state, action) => {
       state.registerRequestError = action.payload;
+    })
+    .addCase(setGetMeInfoRequestStarted, (state, action) => {
+      state.getMeInfoRequestStarted = action.payload;
+    })
+    .addCase(setGetMeInfoRequestFinished, (state, action) => {
+      state.getMeInfoRequestFinished = action.payload;
+    })
+    .addCase(setGetMeInfoRequestError, (state, action) => {
+      state.getMeInfoRequestError = action.payload;
     });
 });

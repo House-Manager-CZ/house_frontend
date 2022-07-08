@@ -4,6 +4,7 @@ export const UserSchema: TUserSchema = {
   accessToken: false,
   refreshToken: false,
   expires: false,
+  userInfo: false,
   loginRequestStarted: false,
   loginRequestFinished: false,
   loginRequestError: "",
@@ -13,4 +14,7 @@ export const UserSchema: TUserSchema = {
   registerRequestStarted: false,
   registerRequestFinished: false,
   registerRequestError: "",
+  getMeInfoRequestStarted: false,
+  getMeInfoRequestFinished: false,
+  getMeInfoRequestError: "",
 };

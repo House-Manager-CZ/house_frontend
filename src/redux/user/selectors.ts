@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { moduleName } from "./module";
 import { TUserSchema } from "./types/user.schema";
+import { checkUserData } from "../../helpers/user";
 
 const userState = (state: any): TUserSchema => state[moduleName];
 
@@ -30,6 +31,17 @@ export const isLoggedInSelector = createSelector(
 export const isTokenExpiredSelector = createSelector(
   userState,
   (state: TUserSchema) => state.expires < Date.now()
+);
+
+export const userInfoSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.userInfo
+);
+
+export const userInfoValidSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    state.userInfo !== false && checkUserData(state.userInfo)
 );
 
 export const loginRequestStartedSelector = createSelector(
@@ -132,4 +144,38 @@ export const registerRequestFailedSelector = createSelector(
   userState,
   (state: TUserSchema) =>
     !state.registerRequestStarted && !!state.registerRequestError
+);
+
+export const getMeInfoRequestStartedSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.getMeInfoRequestStarted
+);
+
+export const getMeInfoRequestFinishedSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.getMeInfoRequestFinished
+);
+
+export const getMeInfoRequestErrorSelector = createSelector(
+  userState,
+  (state: TUserSchema) => state.getMeInfoRequestError
+);
+
+export const getMeInfoRequestLoadingSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    state.getMeInfoRequestStarted &&
+    !(state.getMeInfoRequestFinished || state.getMeInfoRequestError)
+);
+
+export const getMeInfoRequestSuccessSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    !state.getMeInfoRequestStarted && state.getMeInfoRequestFinished
+);
+
+export const getMeInfoRequestFailedSelector = createSelector(
+  userState,
+  (state: TUserSchema) =>
+    !state.getMeInfoRequestStarted && !!state.getMeInfoRequestError
 );
