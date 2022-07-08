@@ -6,4 +6,9 @@ export class UsersApi extends BaseApi {
     const response = await this.axios.get("/users");
     return response.data;
   }
+
+  public async getMe(): Promise<TApiUser> {
+    const response = await this.axios.get("/users/me");
+    return response.data;
+  }
 }
