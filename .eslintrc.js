@@ -46,6 +46,8 @@ module.exports = {
     "no-param-reassign": [2, { props: false }],
     "no-shadow": "off",
     "no-use-before-define": "off",
+    "import/no-cycle": "off",
+    "react/jsx-props-no-spreading": "off",
     "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/array-type": [
       "error",
