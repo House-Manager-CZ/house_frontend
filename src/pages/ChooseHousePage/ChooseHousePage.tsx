@@ -30,6 +30,8 @@ import {
 } from "./ChooseHousePage.types";
 import { TApiHouse } from "../../helpers/api/types/entities.types";
 import useChooseHousePage from "./useChooseHousePage";
+import { APP_ROUTES } from "../../helpers/routing";
+import ButtonLink from "../../ui/ButtonLink/ButtonLink";
 
 const ChooseHousePage: React.FC<TChooseHousePageProps> = (
   props: TChooseHousePageProps
@@ -46,9 +48,14 @@ const ChooseHousePage: React.FC<TChooseHousePageProps> = (
           Refresh
         </Button>
         <Box flexGrow={1} />
-        <Button variant={"contained"} disableElevation startIcon={<Add />}>
+        <ButtonLink
+          to={APP_ROUTES.ADD_HOUSE}
+          variant={"contained"}
+          disableElevation
+          startIcon={<Add />}
+        >
           Add house
-        </Button>
+        </ButtonLink>
       </Stack>
       {housesLoading ? (
         <Paper sx={{ p: 2 }}>
