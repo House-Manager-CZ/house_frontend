@@ -3,23 +3,23 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import { AppBox } from "./App.styled";
-import ChooseHousePage from "../../pages/ChooseHousePage/ChooseHousePage";
 import DashboardWrapper from "../DashboardWrapper/DashboardWrapper";
-import { appRoutes } from "../../helpers/routing";
+import { APP_ROUTES, appRoutes, TAppRouteDetails } from "../../helpers/routing";
 
 const App = () => (
   <BrowserRouter>
     <AppBox>
       <Routes>
-        <Route path={appRoutes.AUTH.path}>
-          <Route path={appRoutes.LOGIN.path} element={<LoginPage />} />
-          <Route path={appRoutes.REGISTER.path} element={<RegisterPage />} />
+        <Route>
+          <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
         </Route>
-        <Route path={appRoutes.HOME.path} element={<DashboardWrapper />}>
-          <Route
-            path={appRoutes.CHOOSE_HOUSE.path}
-            element={<ChooseHousePage />}
-          />
+        <Route path={APP_ROUTES.HOME} element={<DashboardWrapper />}>
+          {Object.values<TAppRouteDetails<any>>(appRoutes).map(
+            ({ path, component: Component }: TAppRouteDetails<any>) => (
+              <Route key={path} path={path} element={<Component />} />
+            )
+          )}
         </Route>
       </Routes>
     </AppBox>
