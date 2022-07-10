@@ -38,18 +38,24 @@ declare global {
   }
 }
 
+const strictMode = process.env.NODE_ENV === "production";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const rootElement = (
+  <ThemeProvider theme={mainTheme}>
+    <CssBaseline />
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ThemeProvider>
+);
+
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={mainTheme}>
-      <CssBaseline />
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ThemeProvider>
-  </React.StrictMode>
+  (strictMode && <React.StrictMode>{rootElement}</React.StrictMode>) ||
+    rootElement
 );
 
 // If you want to start measuring performance in your app, pass a function
