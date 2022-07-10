@@ -2,13 +2,14 @@ import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import { AxiosError } from "axios";
 import {
-  runHousesRequest,
+  runGetHousesRequest,
+  setGetHousesRequestError,
+  setGetHousesRequestFinished,
+  setGetHousesRequestStarted,
   setHouses,
-  setHousesRequestError,
-  setHousesRequestFinished,
-  setHousesRequestStarted,
   setSelectedHouseId,
 } from "./actions";
+
 import { TApiError } from "../../helpers/api/types/error.types";
 import Api from "../../helpers/api/main.api";
 import { TApiHouse } from "../../helpers/api/types/entities.types";
@@ -25,7 +26,7 @@ export function* housesSaga(): SagaIterator<void> {
 }
 
 export function* initSaga() {
-  yield put(runHousesRequest());
+  yield put(runGetHousesRequest());
 
   try {
     const selectedHouseId: string | false = yield call(
@@ -42,7 +43,7 @@ export function* initSaga() {
 }
 
 export function* fetchHousesWatcher(): SagaIterator<void> {
-  yield takeLatest(runHousesRequest, fetchHousesWorker);
+  yield takeLatest(runGetHousesRequest, fetchHousesWorker);
 }
 
 export function* setSelectedHouseWatcher(): SagaIterator<void> {
@@ -54,9 +55,9 @@ export function* fetchHousesWorker() {
   yield call(waitFor, (state: any) => !isTokenExpiredSelector(state));
 
   yield all([
-    put(setHousesRequestStarted(true)),
-    put(setHousesRequestFinished(false)),
-    put(setHousesRequestError("")),
+    put(setGetHousesRequestStarted(true)),
+    put(setGetHousesRequestFinished(false)),
+    put(setGetHousesRequestError("")),
   ]);
 
   try {
@@ -64,17 +65,17 @@ export function* fetchHousesWorker() {
 
     yield put(setHouses(houses));
 
-    yield put(setHousesRequestFinished(true));
+    yield put(setGetHousesRequestFinished(true));
   } catch (e: unknown) {
     const error = <AxiosError<TApiError>>e;
 
     yield put(
-      setHousesRequestError(
+      setGetHousesRequestError(
         error.response?.data.message || "Can't fetch houses"
       )
     );
   } finally {
-    yield put(setHousesRequestStarted(false));
+    yield put(setGetHousesRequestStarted(false));
   }
 }
 

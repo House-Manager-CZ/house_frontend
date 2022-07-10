@@ -20,7 +20,7 @@ import { TAppDispatch, TRootState } from "../../redux/store";
 import {
   getHousesRequestLoadingSelector,
   housesSelector,
-  runHousesRequest,
+  runGetHousesRequest,
   setSelectedHouseId,
 } from "../../redux/houses";
 import {
@@ -104,7 +104,7 @@ const mapStateToProps = (state: TRootState): TChooseHousePageStateProps => ({
 const mapDispatchToProps = (
   dispatch: TAppDispatch
 ): TChooseHousePageDispatchProps => ({
-  fetchHouses: () => dispatch(runHousesRequest()),
+  fetchHouses: () => dispatch(runGetHousesRequest()),
   setSelectedHouseId: (id: string) => dispatch(setSelectedHouseId(id)),
 });
 

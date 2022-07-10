@@ -1,17 +1,17 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { HousesSchema } from "./schema";
 import {
-  runHousesRequest,
+  runGetHousesRequest,
+  setGetHousesRequestError,
+  setGetHousesRequestFinished,
+  setGetHousesRequestStarted,
   setHouses,
-  setHousesRequestError,
-  setHousesRequestFinished,
-  setHousesRequestStarted,
   setSelectedHouseId,
 } from "./actions";
 
 export default createReducer(HousesSchema, (builder) => {
   builder
-    .addCase(runHousesRequest, () => {
+    .addCase(runGetHousesRequest, () => {
       //
     })
     .addCase(setHouses, (state, action) => {
@@ -20,13 +20,13 @@ export default createReducer(HousesSchema, (builder) => {
     .addCase(setSelectedHouseId, (state, action) => {
       state.selectedHouseId = action.payload;
     })
-    .addCase(setHousesRequestStarted, (state, action) => {
+    .addCase(setGetHousesRequestStarted, (state, action) => {
       state.getHousesRequestStarted = action.payload;
     })
-    .addCase(setHousesRequestFinished, (state, action) => {
+    .addCase(setGetHousesRequestFinished, (state, action) => {
       state.getHousesRequestFinished = action.payload;
     })
-    .addCase(setHousesRequestError, (state, action) => {
+    .addCase(setGetHousesRequestError, (state, action) => {
       state.getHousesRequestError = action.payload;
     });
 });
