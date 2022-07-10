@@ -50,6 +50,7 @@ import {
 import { APP_ROUTES, appRoutes } from "../../helpers/routing";
 import { TApiHouse } from "../../helpers/api/types/entities.types";
 import MenuItemLink from "../../ui/MenuItemLink/MenuItemLink";
+import NotificationStack from "../NotificationStack/NotificationStack";
 
 const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   props: TDashboardWrapperProps
@@ -172,6 +173,7 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
       </DashboardDrawer>
       <DashboardContainer>
         <DashboardContainerToolbar />
+        <NotificationStack />
         <Outlet />
       </DashboardContainer>
     </DashboardWrapperBox>
