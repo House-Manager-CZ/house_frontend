@@ -32,13 +32,14 @@ import {
 } from "./DashboardWrapper.styled";
 import useDashboardWrapper from "./useDashboardWrapper";
 import { selectedHouseIdSelector } from "../../redux/houses";
+import { APP_ROUTES } from "../../helpers/routing";
 
 const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   props: TDashboardWrapperProps
 ): React.ReactElement => {
   const { isLogged, selectedHouseId } = props;
 
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   const { isDrawerOpen, handleMenuIconClick, handleDrawerClose } =
     useDashboardWrapper(props);
@@ -47,10 +48,14 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
     theme.breakpoints.down("sm")
   );
 
-  if (!isLogged) return <Navigate to={"/auth/login"} />;
+  if (!isLogged) return <Navigate to={APP_ROUTES.LOGIN} />;
 
-  if (!selectedHouseId && location.pathname !== "/choose-house")
-    return <Navigate to={"/choose-house"} />;
+  if (
+    !selectedHouseId &&
+    pathname !== APP_ROUTES.CHOOSE_HOUSE &&
+    pathname !== APP_ROUTES.ADD_HOUSE
+  )
+    return <Navigate to={APP_ROUTES.CHOOSE_HOUSE} />;
 
   return (
     <DashboardWrapperBox>
