@@ -66,7 +66,7 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
               <Menu />
             </IconButton>
           )}
-          <Typography variant={"h6"} color={"inherit"} sx={{ mr: 2 }}>
+          <Typography variant={"h6"} sx={{ mr: 2 }}>
             Dashboard
           </Typography>
           <Box flexGrow={1} />
