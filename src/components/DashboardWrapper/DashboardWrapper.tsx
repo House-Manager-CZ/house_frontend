@@ -4,22 +4,33 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import {
   Avatar,
   Box,
+  Button,
+  Divider,
   IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
+  Skeleton,
   Stack,
   Theme,
   Toolbar,
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { Apartment, Menu, Settings } from "@mui/icons-material";
-import { TRootState } from "../../redux/store";
+import {
+  Apartment,
+  ArrowDropDown,
+  Menu as MenuIcon,
+  Settings,
+} from "@mui/icons-material";
+import { TAppDispatch, TRootState } from "../../redux/store";
 import { isLoggedInSelector } from "../../redux/user";
 import {
+  TDashboardWrapperDispatchProps,
   TDashboardWrapperProps,
   TDashboardWrapperStateProps,
 } from "./DashboardWrapper.types";
@@ -31,18 +42,33 @@ import {
   DashboardWrapperBox,
 } from "./DashboardWrapper.styled";
 import useDashboardWrapper from "./useDashboardWrapper";
-import { selectedHouseIdSelector } from "../../redux/houses";
-import { APP_ROUTES } from "../../helpers/routing";
+import {
+  housesSelector,
+  selectedHouseIdSelector,
+  setSelectedHouseId,
+} from "../../redux/houses";
+import { APP_ROUTES, appRoutes } from "../../helpers/routing";
+import { TApiHouse } from "../../helpers/api/types/entities.types";
+import MenuItemLink from "../../ui/MenuItemLink/MenuItemLink";
 
 const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   props: TDashboardWrapperProps
 ): React.ReactElement => {
-  const { isLogged, selectedHouseId } = props;
+  const { isLogged, selectedHouseId, houses } = props;
 
   const { pathname } = useLocation();
 
-  const { isDrawerOpen, handleMenuIconClick, handleDrawerClose } =
-    useDashboardWrapper(props);
+  const {
+    housesMenuAnchorEl,
+    isDrawerOpen,
+    currentHouse,
+    isHousesMenuOpen,
+    handleMenuIconClick,
+    handleDrawerClose,
+    handleHousesButtonClick,
+    handleHousesMenuClose,
+    handleHousesMenuItemClick,
+  } = useDashboardWrapper(props);
 
   const smDownBreakpoint = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm")
@@ -63,12 +89,57 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
         <Toolbar>
           {smDownBreakpoint && (
             <IconButton sx={{ mr: 2 }} onClick={handleMenuIconClick}>
-              <Menu />
+              <MenuIcon />
             </IconButton>
           )}
           <Typography variant={"h6"} sx={{ mr: 2 }}>
             Dashboard
           </Typography>
+
+          {selectedHouseId &&
+            (currentHouse ? (
+              <>
+                <Button
+                  variant={"text"}
+                  onClick={handleHousesButtonClick}
+                  endIcon={<ArrowDropDown />}
+                >
+                  {currentHouse.name}
+                </Button>
+                <Menu
+                  open={isHousesMenuOpen}
+                  anchorEl={housesMenuAnchorEl}
+                  onClose={handleHousesMenuClose}
+                  MenuListProps={{
+                    dense: true,
+                  }}
+                >
+                  {houses.map((house: TApiHouse) => (
+                    <MenuItem
+                      key={house.id}
+                      onClick={() => handleHousesMenuItemClick(house.id)}
+                      selected={house.id === selectedHouseId}
+                    >
+                      {house.name}
+                    </MenuItem>
+                  ))}
+                  <Divider />
+                  <MenuItemLink
+                    to={appRoutes.CHOOSE_HOUSE.path}
+                    onClick={handleHousesMenuClose}
+                  >
+                    Manage houses
+                  </MenuItemLink>
+                </Menu>
+              </>
+            ) : (
+              <Skeleton
+                variant={"rectangular"}
+                width={100}
+                height={"2em"}
+                animation={"wave"}
+              />
+            ))}
           <Box flexGrow={1} />
           <IconButton>
             <Settings />
@@ -110,6 +181,14 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
 const mapStateToProps = (state: TRootState): TDashboardWrapperStateProps => ({
   isLogged: isLoggedInSelector(state),
   selectedHouseId: selectedHouseIdSelector(state),
+  houses: housesSelector(state),
 });
 
-export default connect(mapStateToProps)(DashboardWrapper);
+const mapDispatchToProps = (
+  dispatch: TAppDispatch
+): TDashboardWrapperDispatchProps => ({
+  setSelectedHouseId: (houseId: string) =>
+    dispatch(setSelectedHouseId(houseId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardWrapper);
