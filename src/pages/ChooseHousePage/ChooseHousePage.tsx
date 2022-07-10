@@ -21,6 +21,7 @@ import {
   getHousesRequestLoadingSelector,
   housesSelector,
   runGetHousesRequest,
+  selectedHouseIdSelector,
   setSelectedHouseId,
 } from "../../redux/houses";
 import {
@@ -36,7 +37,7 @@ import ButtonLink from "../../ui/ButtonLink/ButtonLink";
 const ChooseHousePage: React.FC<TChooseHousePageProps> = (
   props: TChooseHousePageProps
 ): React.ReactElement => {
-  const { houses, housesLoading } = props;
+  const { houses, selectedHouseId, housesLoading } = props;
 
   const { handleRefreshClick, handleSelectHouseClick } =
     useChooseHousePage(props);
@@ -82,8 +83,9 @@ const ChooseHousePage: React.FC<TChooseHousePageProps> = (
                     <Button
                       variant={"text"}
                       onClick={() => handleSelectHouseClick(house.id)}
+                      disabled={selectedHouseId === house.id}
                     >
-                      Select
+                      {selectedHouseId === house.id ? "Selected" : "Select"}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -98,6 +100,7 @@ const ChooseHousePage: React.FC<TChooseHousePageProps> = (
 
 const mapStateToProps = (state: TRootState): TChooseHousePageStateProps => ({
   houses: housesSelector(state),
+  selectedHouseId: selectedHouseIdSelector(state),
   housesLoading: getHousesRequestLoadingSelector(state),
 });
 

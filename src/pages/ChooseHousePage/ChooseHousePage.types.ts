@@ -2,6 +2,7 @@ import { TApiHouse } from "../../helpers/api/types/entities.types";
 
 export type TChooseHousePageStateProps = {
   houses: Array<TApiHouse>;
+  selectedHouseId: string | false;
   housesLoading: boolean;
 };
 
