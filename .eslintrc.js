@@ -48,6 +48,7 @@ module.exports = {
     "no-use-before-define": "off",
     "import/no-cycle": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/no-array-index-key": "off",
     "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/array-type": [
       "error",
