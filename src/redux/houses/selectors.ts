@@ -47,3 +47,37 @@ export const getHousesRequestFailedSelector = createSelector(
   (state: THousesSchema) =>
     !state.getHousesRequestStarted && !!state.getHousesRequestError
 );
+
+export const createHouseRequestStartedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.createHouseRequestStarted
+);
+
+export const createHouseRequestFinishedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.createHouseRequestFinished
+);
+
+export const createHouseRequestErrorSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.createHouseRequestError
+);
+
+export const createHouseRequestLoadingSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    state.createHouseRequestStarted &&
+    !(state.createHouseRequestFinished || state.createHouseRequestError)
+);
+
+export const createHouseRequestSuccessSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    !state.createHouseRequestStarted && state.createHouseRequestFinished
+);
+
+export const createHouseRequestFailedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    !state.createHouseRequestStarted && !!state.createHouseRequestError
+);

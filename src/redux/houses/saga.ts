@@ -1,8 +1,21 @@
 import { SagaIterator } from "redux-saga";
-import { all, call, fork, put, takeLatest } from "redux-saga/effects";
+import {
+  all,
+  call,
+  delay,
+  fork,
+  put,
+  take,
+  takeLatest,
+} from "redux-saga/effects";
 import { AxiosError } from "axios";
 import {
+  ACTION_TYPES,
+  runCreateHouseRequest,
   runGetHousesRequest,
+  setCreateHouseRequestError,
+  setCreateHouseRequestFinished,
+  setCreateHouseRequestStarted,
   setGetHousesRequestError,
   setGetHousesRequestFinished,
   setGetHousesRequestStarted,
@@ -21,6 +34,7 @@ export function* housesSaga(): SagaIterator<void> {
   yield all([
     fork(initSaga),
     fork(fetchHousesWatcher),
+    fork(createHouseWatcher),
     fork(setSelectedHouseWatcher),
   ]);
 }
@@ -44,6 +58,10 @@ export function* initSaga() {
 
 export function* fetchHousesWatcher(): SagaIterator<void> {
   yield takeLatest(runGetHousesRequest, fetchHousesWorker);
+}
+
+export function* createHouseWatcher(): SagaIterator<void> {
+  yield takeLatest(runCreateHouseRequest, createHouseWorker);
 }
 
 export function* setSelectedHouseWatcher(): SagaIterator<void> {
@@ -76,6 +94,42 @@ export function* fetchHousesWorker() {
     );
   } finally {
     yield put(setGetHousesRequestStarted(false));
+  }
+}
+
+export function* createHouseWorker({
+  payload,
+}: ReturnType<typeof runCreateHouseRequest>) {
+  yield all([
+    put(setCreateHouseRequestStarted(true)),
+    put(setCreateHouseRequestFinished(false)),
+    put(setCreateHouseRequestError(false)),
+  ]);
+
+  try {
+    yield Api.getInstance().houses.createHouse(payload);
+
+    yield put(runGetHousesRequest());
+
+    yield take(ACTION_TYPES.SET_GET_HOUSES_REQUEST_FINISHED);
+    yield take(ACTION_TYPES.SET_GET_HOUSES_REQUEST_FINISHED);
+
+    yield put(setCreateHouseRequestFinished(true));
+  } catch (e: unknown) {
+    const error = <AxiosError<TApiError>>e;
+
+    yield put(
+      setCreateHouseRequestError({
+        title: error.response?.data?.message || "Can't create house",
+        message:
+          Object.values(error.response?.data?.errors?.[0] || {})[0] ||
+          "Unknown error",
+      })
+    );
+  } finally {
+    yield put(setCreateHouseRequestStarted(false));
+    yield delay(0);
+    yield put(setCreateHouseRequestFinished(false));
   }
 }
 

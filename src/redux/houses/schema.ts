@@ -6,4 +6,7 @@ export const HousesSchema: THousesSchema = {
   getHousesRequestStarted: false,
   getHousesRequestFinished: false,
   getHousesRequestError: "",
+  createHouseRequestStarted: false,
+  createHouseRequestFinished: false,
+  createHouseRequestError: false,
 };

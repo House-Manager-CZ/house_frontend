@@ -1,7 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { HousesSchema } from "./schema";
 import {
+  runCreateHouseRequest,
   runGetHousesRequest,
+  setCreateHouseRequestError,
+  setCreateHouseRequestFinished,
+  setCreateHouseRequestStarted,
   setGetHousesRequestError,
   setGetHousesRequestFinished,
   setGetHousesRequestStarted,
@@ -12,6 +16,9 @@ import {
 export default createReducer(HousesSchema, (builder) => {
   builder
     .addCase(runGetHousesRequest, () => {
+      //
+    })
+    .addCase(runCreateHouseRequest, () => {
       //
     })
     .addCase(setHouses, (state, action) => {
@@ -28,5 +35,14 @@ export default createReducer(HousesSchema, (builder) => {
     })
     .addCase(setGetHousesRequestError, (state, action) => {
       state.getHousesRequestError = action.payload;
+    })
+    .addCase(setCreateHouseRequestStarted, (state, action) => {
+      state.createHouseRequestStarted = action.payload;
+    })
+    .addCase(setCreateHouseRequestFinished, (state, action) => {
+      state.createHouseRequestFinished = action.payload;
+    })
+    .addCase(setCreateHouseRequestError, (state, action) => {
+      state.createHouseRequestError = action.payload;
     });
 });
