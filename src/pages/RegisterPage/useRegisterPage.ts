@@ -12,12 +12,14 @@ const useRegisterPage = ({
   const { values, errors, handleChange, handleSubmit } =
     useFormik<TRegisterPageFormikValues>({
       initialValues: {
+        username: "",
         email: "",
         password: "",
         passwordConfirm: "",
       },
       validateOnChange: false,
       validationSchema: Yup.object({
+        username: Yup.string().required("Username is required"),
         email: Yup.string()
           .required("Email is required")
           .email("Email isn't valid"),
@@ -28,12 +30,13 @@ const useRegisterPage = ({
           .required("Password confirmation is required")
           .oneOf([Yup.ref("password"), null], "Passwords must match"),
       }),
-      onSubmit({ email, password }: TRegisterPageFormikValues) {
-        runRegister(email, password);
+      onSubmit({ username, email, password }: TRegisterPageFormikValues) {
+        runRegister(username, email, password);
       },
     });
 
   return {
+    usernameValue: values.username,
     emailValue: values.email,
     passwordValue: values.password,
     passwordConfirmValue: values.passwordConfirm,

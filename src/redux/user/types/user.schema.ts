@@ -24,4 +24,6 @@ export type TFetchLoginAction = {
   password: string;
 };
 
-export type TFetchRegisterAction = TFetchLoginAction;
+export type TFetchRegisterAction = TFetchLoginAction & {
+  username: string;
+};

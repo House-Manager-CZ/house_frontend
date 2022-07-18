@@ -11,7 +11,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Mail, VpnKey } from "@mui/icons-material";
+import { Mail, Person, VpnKey } from "@mui/icons-material";
 import { Navigate, useNavigate } from "react-router-dom";
 import {
   TRegisterPageDispatchProps,
@@ -38,6 +38,7 @@ const RegisterPage: React.FC<TRegisterPageProps> = (
   const { isLogged, registerRequestLoading, registerRequestError } = props;
 
   const {
+    usernameValue,
     emailValue,
     passwordValue,
     passwordConfirmValue,
@@ -57,6 +58,29 @@ const RegisterPage: React.FC<TRegisterPageProps> = (
         <CardContent>
           <Stack direction={"column"}>
             <RegisterCardTextField
+              color={errors.username ? "error" : "primary"}
+              name={"username"}
+              value={usernameValue}
+              onChange={handleChange}
+              variant={"outlined"}
+              label={"Username"}
+              type={"text"}
+              autoComplete={"username"}
+              margin={"dense"}
+              error={!!errors.username}
+              helperText={errors.username}
+              disabled={registerRequestLoading}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position={"start"}>
+                    <Icon>
+                      <Person />
+                    </Icon>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <RegisterCardTextField
               color={errors.email ? "error" : "primary"}
               name={"email"}
               value={emailValue}
@@ -65,7 +89,7 @@ const RegisterPage: React.FC<TRegisterPageProps> = (
               label={"Email"}
               type={"email"}
               autoComplete={"email"}
-              margin={"dense"}
+              margin={"normal"}
               error={!!errors.email}
               helperText={errors.email}
               disabled={registerRequestLoading}
@@ -161,8 +185,8 @@ export const mapStateToProps = (
 export const mapDispatchToProps = (
   dispatch: TAppDispatch
 ): TRegisterPageDispatchProps => ({
-  runRegister: (email: string, password: string) =>
-    dispatch(runRegister({ email, password })),
+  runRegister: (username: string, email: string, password: string) =>
+    dispatch(runRegister({ username, email, password })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);
