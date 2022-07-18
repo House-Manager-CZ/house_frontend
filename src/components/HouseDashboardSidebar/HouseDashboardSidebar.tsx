@@ -117,7 +117,7 @@ const HouseDashboardSidebar: React.FC<THouseDashboardSidebarProps> = (
               </Stack>
               <Stack direction={"row"} flexWrap={"wrap"} gap={1}>
                 {selectedHouse.members.map((member: TApiUser) => (
-                  <Chip key={member.id} label={`${member.email}`} />
+                  <Chip key={member.id} label={`${member.search_name}`} />
                 ))}
               </Stack>
             </Stack>
