@@ -14,6 +14,13 @@ export const selectedHouseIdSelector = createSelector(
   (state: THousesSchema) => state.selectedHouseId
 );
 
+export const selectedHouseSelector = createSelector(
+  housesState,
+  ({ houses, selectedHouseId }: THousesSchema) =>
+    (selectedHouseId && houses.find((house) => house.id === selectedHouseId)) ||
+    false
+);
+
 export const getHousesRequestStartedSelector = createSelector(
   housesState,
   (state: THousesSchema) => state.getHousesRequestStarted

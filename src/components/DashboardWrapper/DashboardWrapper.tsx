@@ -24,6 +24,7 @@ import {
 import {
   Apartment,
   ArrowDropDown,
+  Dashboard,
   Menu as MenuIcon,
   Settings,
 } from "@mui/icons-material";
@@ -51,6 +52,7 @@ import { APP_ROUTES, appRoutes } from "../../helpers/routing";
 import { TApiHouse } from "../../helpers/api/types/entities.types";
 import MenuItemLink from "../../ui/MenuItemLink/MenuItemLink";
 import NotificationStack from "../NotificationStack/NotificationStack";
+import ListItemButtonLink from "../../ui/ListItemButtonLink/ListItemButtonLink";
 
 const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   props: TDashboardWrapperProps
@@ -161,6 +163,12 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
           </Stack>
         </Toolbar>
         <List>
+          <ListItemButtonLink to={appRoutes.HOME.path}>
+            <ListItemIcon>
+              <Dashboard />
+            </ListItemIcon>
+            <ListItemText primary={"Dashboard"} />
+          </ListItemButtonLink>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
