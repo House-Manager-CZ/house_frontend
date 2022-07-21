@@ -29,6 +29,8 @@ import {
   createHouseRequestSuccessSelector,
   runCreateHouseRequest,
 } from "../../redux/houses";
+import MembersList from "../../components/MembersList/MembersList";
+import UsersSearch from "../../components/UsersSearch/UsersSearch";
 
 const AddHousePage: React.FC<TAddHousePageProps> = (
   props: TAddHousePageProps
@@ -110,6 +112,16 @@ const AddHousePage: React.FC<TAddHousePageProps> = (
             }}
           />
         </Stack>
+        <UsersSearch onUserAdd={handleMemberAdd} />
+        {selectedMembers.length > 0 && (
+          <Stack>
+            <Typography variant={"body1"}>Members</Typography>
+            <MembersList
+              members={selectedMembers}
+              onRemoveMember={handleMemberRemove}
+            />
+          </Stack>
+        )}
         <Collapse in={!!createHouseRequestError}>
           <Alert severity={"error"}>
             {createHouseRequestError && (
