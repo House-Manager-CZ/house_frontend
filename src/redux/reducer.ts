@@ -1,10 +1,12 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import userReducer, { moduleName as usersModuleName } from "./user";
+import usersReducer, { moduleName as usersModuleName } from "./users";
+import userReducer, { moduleName as userModuleName } from "./user";
 import housesReducer, { moduleName as housesModuleName } from "./houses";
 
 const rootReducer = combineReducers({
-  [usersModuleName]: userReducer,
+  [userModuleName]: userReducer,
   [housesModuleName]: housesReducer,
+  [usersModuleName]: usersReducer,
 });
 
 export default rootReducer;
