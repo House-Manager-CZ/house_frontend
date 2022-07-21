@@ -39,8 +39,16 @@ const AddHousePage: React.FC<TAddHousePageProps> = (
     createHouseRequestError,
   } = props;
 
-  const { nameValue, locationValue, errors, handleChange, handleFormSubmit } =
-    useAddHousePage(props);
+  const {
+    nameValue,
+    locationValue,
+    selectedMembers,
+    errors,
+    handleChange,
+    handleMemberAdd,
+    handleMemberRemove,
+    handleFormSubmit,
+  } = useAddHousePage(props);
 
   const navigate = useNavigate();
 
@@ -124,7 +132,7 @@ const AddHousePage: React.FC<TAddHousePageProps> = (
               )
             }
           >
-            Add
+            Create
           </Button>
         </Stack>
       </Stack>
