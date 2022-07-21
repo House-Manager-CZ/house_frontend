@@ -14,6 +14,7 @@ import {
   Paper,
   Popper,
   Theme,
+  useMediaQuery,
 } from "@mui/material";
 import { ArrowDropDown, Person } from "@mui/icons-material";
 import useMembersListItem from "./useMembersListItem";
@@ -31,18 +32,28 @@ const MembersListItem: React.FC<TMembersListItemProps> = (
     handleButtonGroupClose,
   } = useMembersListItem();
 
+  const smDownBreakpoint = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm")
+  );
+
   return (
     <ListItem disableGutters>
-      <ListItemIcon>
-        <Person />
-      </ListItemIcon>
+      {!smDownBreakpoint && (
+        <ListItemIcon>
+          <Person />
+        </ListItemIcon>
+      )}
       <ListItemText
         primary={
           member.first_name && member.last_name
             ? `${member.first_name} ${member.last_name}`
             : member.search_name
         }
-        secondary={member.email}
+        secondary={
+          member.first_name && member.last_name
+            ? member.search_name
+            : member.email
+        }
       />
       <ListItemSecondaryAction
         sx={(theme: Theme) => ({
@@ -60,6 +71,7 @@ const MembersListItem: React.FC<TMembersListItemProps> = (
           anchorEl={anchorRef.current}
           transition
           disablePortal
+          sx={{ width: anchorRef.current?.clientWidth }}
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -69,13 +81,20 @@ const MembersListItem: React.FC<TMembersListItemProps> = (
                   placement === "bottom" ? "center top" : "center bottom",
               }}
             >
-              <Paper elevation={2}>
+              <Paper
+                elevation={2}
+                sx={{
+                  mt: 1,
+                }}
+              >
                 <ClickAwayListener onClickAway={handleButtonGroupClose}>
-                  <MenuList autoFocusItem>
-                    <MenuItem disabled>Admin</MenuItem>
+                  <MenuList autoFocusItem dense>
+                    <MenuItem disabled>
+                      <ListItemText>Admin</ListItemText>
+                    </MenuItem>
                     <Divider />
                     <MenuItem onClick={() => onRemoveMember(member)}>
-                      Delete
+                      <ListItemText>Delete</ListItemText>
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
