@@ -5,6 +5,7 @@ import { TApiHouse } from "./types/entities.types";
 export type THouseApiCreateData = {
   name: string;
   location: string;
+  members: Array<number>;
 };
 
 export default class HousesApi extends BaseApi {

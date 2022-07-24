@@ -30,7 +30,10 @@ const useAddHousePage = ({
           ),
       }),
       onSubmit: (submitValues: TAddHousePageFormValues) => {
-        runCreateHouse(submitValues);
+        runCreateHouse({
+          ...submitValues,
+          members: submitValues.members.map((member) => member.id),
+        });
       },
     });
 
