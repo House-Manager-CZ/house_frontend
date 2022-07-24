@@ -8,13 +8,14 @@ export type TRegisterPageStateProps = {
 };
 
 export type TRegisterPageDispatchProps = {
-  runRegister: (email: string, password: string) => void;
+  runRegister: (username: string, email: string, password: string) => void;
 };
 
 export type TRegisterPageProps = TRegisterPageStateProps &
   TRegisterPageDispatchProps;
 
 export type TRegisterPageHook = {
+  usernameValue: string;
   emailValue: string;
   passwordValue: string;
   passwordConfirmValue: string;
@@ -24,6 +25,7 @@ export type TRegisterPageHook = {
 };
 
 export type TRegisterPageFormikValues = {
+  username: string;
   email: string;
   password: string;
   passwordConfirm: string;

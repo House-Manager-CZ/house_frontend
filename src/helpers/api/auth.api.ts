@@ -7,7 +7,9 @@ export type TLoginRequestData = {
   password: string;
 };
 
-export type TRegisterRequestData = TLoginRequestData;
+export type TRegisterRequestData = TLoginRequestData & {
+  username: string;
+};
 
 export default class AuthApi extends BaseApi {
   public async login(data: TLoginRequestData): Promise<TApiLoginResponse> {
