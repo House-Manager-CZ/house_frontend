@@ -31,6 +31,7 @@ import {
 } from "../../redux/houses";
 import MembersList from "../../components/MembersList/MembersList";
 import UsersSearch from "../../components/UsersSearch/UsersSearch";
+import { userInfoSelector } from "../../redux/user";
 
 const AddHousePage: React.FC<TAddHousePageProps> = (
   props: TAddHousePageProps
@@ -153,6 +154,7 @@ const AddHousePage: React.FC<TAddHousePageProps> = (
 };
 
 const mapStateToProps = (state: TRootState): TAddHousePageStateProps => ({
+  userInfo: userInfoSelector(state),
   createHouseRequestLoading: createHouseRequestLoadingSelector(state),
   createHouseRequestSuccess: createHouseRequestSuccessSelector(state),
   createHouseRequestError: createHouseRequestErrorSelector(state),

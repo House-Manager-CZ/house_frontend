@@ -14,23 +14,31 @@ import {
   Paper,
   Popper,
   Theme,
+  Tooltip,
   useMediaQuery,
 } from "@mui/material";
 import { ArrowDropDown, Person } from "@mui/icons-material";
+import { connect } from "react-redux";
 import useMembersListItem from "./useMembersListItem";
-import { TMembersListItemProps } from "./MembersListItem.types";
+import {
+  TMembersListItemProps,
+  TMembersListItemStateProps,
+} from "./MembersListItem.types";
+import { TRootState } from "../../redux/store";
+import { userInfoSelector } from "../../redux/user";
 
 const MembersListItem: React.FC<TMembersListItemProps> = (
   props: TMembersListItemProps
 ): React.ReactElement => {
-  const { member, onRemoveMember } = props;
+  const { userInfo, member } = props;
 
   const {
     anchorRef,
     isButtonGroupOpened,
     handleToggleButtonClick,
     handleButtonGroupClose,
-  } = useMembersListItem();
+    handleDeleteButtonClick,
+  } = useMembersListItem(props);
 
   const smDownBreakpoint = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm")
@@ -93,9 +101,17 @@ const MembersListItem: React.FC<TMembersListItemProps> = (
                       <ListItemText>Admin</ListItemText>
                     </MenuItem>
                     <Divider />
-                    <MenuItem onClick={() => onRemoveMember(member)}>
-                      <ListItemText>Delete</ListItemText>
-                    </MenuItem>
+                    {userInfo && userInfo.id === member.id ? (
+                      <Tooltip title={"You cannot delete yourself"}>
+                        <MenuItem disabled style={{ pointerEvents: "auto" }}>
+                          <ListItemText>Delete</ListItemText>
+                        </MenuItem>
+                      </Tooltip>
+                    ) : (
+                      <MenuItem onClick={handleDeleteButtonClick}>
+                        <ListItemText>Delete</ListItemText>
+                      </MenuItem>
+                    )}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -107,4 +123,8 @@ const MembersListItem: React.FC<TMembersListItemProps> = (
   );
 };
 
-export default MembersListItem;
+const mapStateToProps = (state: TRootState): TMembersListItemStateProps => ({
+  userInfo: userInfoSelector(state),
+});
+
+export default connect(mapStateToProps)(MembersListItem);

@@ -5,6 +5,7 @@ import { THouseCreateError } from "../../redux/houses/types/houses.schema";
 import { TApiUser } from "../../helpers/api/types/entities.types";
 
 export type TAddHousePageStateProps = {
+  userInfo: TApiUser | false;
   createHouseRequestLoading: boolean;
   createHouseRequestSuccess: boolean;
   createHouseRequestError: THouseCreateError | false;

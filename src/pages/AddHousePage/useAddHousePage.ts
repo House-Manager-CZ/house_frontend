@@ -10,6 +10,7 @@ import {
 import { TApiUser } from "../../helpers/api/types/entities.types";
 
 const useAddHousePage = ({
+  userInfo,
   runCreateHouse,
 }: TAddHousePageProps): TAddHousePageHook => {
   const { values, errors, handleChange, handleSubmit, setFieldValue } =
@@ -17,7 +18,7 @@ const useAddHousePage = ({
       initialValues: {
         name: "",
         location: "",
-        members: [],
+        members: [...(userInfo !== false ? [userInfo] : [])],
       },
       validateOnChange: false,
       validationSchema: Yup.object({
