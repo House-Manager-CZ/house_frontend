@@ -4,5 +4,5 @@ export const UsersSchema: TUsersSchema = {
   searchResults: [],
   searchUsersRequestStarted: false,
   searchUsersRequestFinished: false,
-  searchUsersRequestError: "",
+  searchUsersRequestError: false,
 };

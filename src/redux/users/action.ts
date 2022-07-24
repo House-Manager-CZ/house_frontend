@@ -1,6 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
 import { moduleName } from "./module";
 import { TApiUser } from "../../helpers/api/types/entities.types";
+import { TUsersSearchError } from "./types/users.schema";
 
 export const ACTION_TYPES = {
   RUN_SEARCH_USERS: `${moduleName}/RUN_SEARCH_USERS`,
@@ -26,6 +27,6 @@ export const setSearchUsersRequestFinished = createAction<boolean>(
   ACTION_TYPES.SET_SEARCH_USERS_REQUEST_FINISHED
 );
 
-export const setSearchUsersRequestError = createAction<string>(
-  ACTION_TYPES.SET_SEARCH_USERS_REQUEST_ERROR
-);
+export const setSearchUsersRequestError = createAction<
+  TUsersSearchError | false
+>(ACTION_TYPES.SET_SEARCH_USERS_REQUEST_ERROR);
