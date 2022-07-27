@@ -29,6 +29,7 @@ import { TApiHouse } from "../../helpers/api/types/entities.types";
 import { isLoggedInSelector, isTokenExpiredSelector } from "../user";
 import { waitFor } from "../../helpers/saga/effects";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/localStorage/consts";
+import { runGetEvents } from "../events";
 
 export function* housesSaga(): SagaIterator<void> {
   yield all([
@@ -140,5 +141,12 @@ export function* setSelectedHouseWorker({
     [localStorage, localStorage.setItem],
     LOCAL_STORAGE_KEYS.SELECTED_HOUSE_ID,
     payload
+  );
+
+  yield put(
+    runGetEvents({
+      house: payload,
+      direction: "upcoming",
+    })
   );
 }
