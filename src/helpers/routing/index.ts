@@ -1,6 +1,7 @@
 import React from "react";
 import ChooseHousePage from "../../pages/ChooseHousePage/ChooseHousePage";
 import AddHousePage from "../../pages/AddHousePage/AddHousePage";
+import HouseDashboard from "../../pages/HouseDashboard/HouseDashboard";
 
 export enum APP_ROUTES {
   HOME = "/",
@@ -20,7 +21,12 @@ export type TAppRoute = {
   [key in keyof typeof APP_ROUTES]: TAppRouteDetails<key>;
 };
 
-export const appRoutes: Omit<TAppRoute, "HOME" | "LOGIN" | "REGISTER"> = {
+export const appRoutes: Omit<TAppRoute, "LOGIN" | "REGISTER"> = {
+  HOME: {
+    path: APP_ROUTES.HOME,
+    readableName: "Home",
+    component: HouseDashboard,
+  },
   CHOOSE_HOUSE: {
     path: APP_ROUTES.CHOOSE_HOUSE,
     readableName: "Choose House",
