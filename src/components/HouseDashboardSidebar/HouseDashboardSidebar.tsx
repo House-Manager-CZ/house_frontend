@@ -6,11 +6,15 @@ import {
   Chip,
   Icon,
   IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
   Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
-import { Map, Navigation, People } from "@mui/icons-material";
+import { Event, Map, Navigation, OpenInNew, People } from "@mui/icons-material";
 import { TRootState } from "../../redux/store";
 import { selectedHouseSelector } from "../../redux/houses";
 import {
@@ -20,12 +24,16 @@ import {
 import TextSkeleton from "../../ui/TextSkeleton/TextSkeleton";
 import useHouseDashboardSidebar from "./useHouseDashboardSidebar";
 import { HouseDashboardSidebarMapImage } from "./HouseDashboardSidebar.styled";
-import { TApiUser } from "../../helpers/api/types/entities.types";
+import { TApiEvent, TApiUser } from "../../helpers/api/types/entities.types";
+import {
+  eventsSelector,
+  getEventsRequestLoadingSelector,
+} from "../../redux/events";
 
 const HouseDashboardSidebar: React.FC<THouseDashboardSidebarProps> = (
   props: THouseDashboardSidebarProps
 ): React.ReactElement => {
-  const { selectedHouse } = props;
+  const { selectedHouse, events, eventsLoading } = props;
 
   const { mapImageUrl, addressInfo } = useHouseDashboardSidebar(props);
 
@@ -103,7 +111,7 @@ const HouseDashboardSidebar: React.FC<THouseDashboardSidebarProps> = (
               direction={"column"}
               spacing={selectedHouse.members.length ? 2 : 0}
             >
-              <Stack direction={"row"} spacing={1}>
+              <Stack direction={"row"} spacing={1} alignItems={"center"}>
                 <Icon>
                   <People />
                 </Icon>
@@ -122,6 +130,71 @@ const HouseDashboardSidebar: React.FC<THouseDashboardSidebarProps> = (
               </Stack>
             </Stack>
           )}
+          <Stack direction={"column"} spacing={events.length ? 2 : 0}>
+            <Stack direction={"row"} spacing={1} alignItems={"center"}>
+              {eventsLoading ? (
+                <TextSkeleton
+                  variant={"text"}
+                  textVariant={"h5"}
+                  sx={{ width: "100%" }}
+                />
+              ) : (
+                <>
+                  <Icon>
+                    <Event />
+                  </Icon>
+                  <Typography variant={"h5"}>
+                    {events.length
+                      ? `${events.length} upcoming event${
+                          events.length > 1 ? "s" : ""
+                        }`
+                      : "No upcoming events"}
+                  </Typography>
+                </>
+              )}
+            </Stack>
+            <List disablePadding>
+              {(eventsLoading ? Array.from(Array(3)) : events).map(
+                (event: TApiEvent) => (
+                  <ListItem
+                    key={event?.id ? event.id : Math.random()}
+                    disableGutters
+                    disablePadding
+                  >
+                    <ListItemText
+                      primary={
+                        eventsLoading ? (
+                          <TextSkeleton
+                            variant={"text"}
+                            animation={"wave"}
+                            textVariant={"body1"}
+                          />
+                        ) : (
+                          event.name
+                        )
+                      }
+                      secondary={
+                        eventsLoading ? (
+                          <TextSkeleton
+                            variant={"text"}
+                            animation={"wave"}
+                            textVariant={"body2"}
+                          />
+                        ) : (
+                          `by ${event?.owner?.username}`
+                        )
+                      }
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton disabled={eventsLoading}>
+                        <OpenInNew />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                )
+              )}
+            </List>
+          </Stack>
         </Stack>
       </CardContent>
     </Card>
@@ -132,5 +205,8 @@ const mapStateToProps = (
   state: TRootState
 ): THouseDashboardSidebarStateProps => ({
   selectedHouse: selectedHouseSelector(state),
+  events: eventsSelector(state),
+  eventsLoading: getEventsRequestLoadingSelector(state),
 });
+
 export default connect(mapStateToProps)(HouseDashboardSidebar);
