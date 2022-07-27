@@ -1,6 +1,7 @@
 import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, select, takeLatest } from "redux-saga/effects";
 import { AxiosError } from "axios";
+import * as Sentry from "@sentry/react";
 import {
   runGetMeInfo,
   runLogin,
@@ -275,6 +276,14 @@ export function* getMeInfoWorker() {
       ),
       put(setUserInfo(meInfo)),
     ]);
+
+    Sentry.configureScope((scope) => {
+      scope.setUser({
+        id: `${meInfo.id}`,
+        email: meInfo.email,
+        username: meInfo.username,
+      });
+    });
 
     yield put(setGetMeInfoRequestFinished(true));
   } catch (e: unknown) {

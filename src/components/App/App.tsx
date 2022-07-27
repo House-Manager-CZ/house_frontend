@@ -1,15 +1,18 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import * as Sentry from "@sentry/react";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import { AppBox } from "./App.styled";
 import DashboardWrapper from "../DashboardWrapper/DashboardWrapper";
 import { APP_ROUTES, appRoutes, TAppRouteDetails } from "../../helpers/routing";
 
+const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
+
 const App = () => (
   <BrowserRouter>
     <AppBox>
-      <Routes>
+      <SentryRoutes>
         <Route>
           <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
           <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
@@ -21,7 +24,7 @@ const App = () => (
             )
           )}
         </Route>
-      </Routes>
+      </SentryRoutes>
     </AppBox>
   </BrowserRouter>
 );

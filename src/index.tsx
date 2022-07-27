@@ -3,6 +3,14 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+import {
+  createRoutesFromChildren,
+  matchRoutes,
+  useLocation,
+  useNavigationType,
+} from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 import mainTheme from "./helpers/theme/mainTheme";
@@ -37,6 +45,25 @@ declare global {
     PasswordCredential: PasswordCredentialConstructor;
   }
 }
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+  integrations: [
+    new BrowserTracing({
+      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+        React.useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        matchRoutes
+      ),
+    }),
+  ],
+  tracesSampleRate: 1.0,
+  autoSessionTracking: false,
+  normalizeDepth: 10,
+  environment: process.env.NODE_ENV,
+});
 
 const strictMode = process.env.NODE_ENV === "production";
 
