@@ -87,11 +87,15 @@ const HouseDashboardSidebar: React.FC<THouseDashboardSidebarProps> = (
               />
             )}
             <Stack direction={"row"} alignItems={"flex-start"} spacing={2}>
-              <Typography variant={"body1"}>
+              <Typography variant={"body1"} sx={{ width: "100%" }}>
                 {addressInfo ? (
                   addressInfo.properties.display_name
                 ) : (
-                  <TextSkeleton variant={"text"} animation={"wave"} />
+                  <TextSkeleton
+                    variant={"text"}
+                    animation={"wave"}
+                    sx={{ flexGrow: 1 }}
+                  />
                 )}
               </Typography>
               {selectedHouse && (
