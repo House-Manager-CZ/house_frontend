@@ -23,4 +23,10 @@ export default class HousesApi extends BaseApi {
 
     return response.data;
   }
+
+  public async deleteHouse(id: string): Promise<void> {
+    const response = await this.axios.delete<void>(`/houses/${id}`);
+
+    return response.data;
+  }
 }
