@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import AuthApi from "./auth.api";
 import HousesApi from "./houses.api";
 import { UsersApi } from "./users.api";
+import EventsApi from "./events.api";
 
 export default class Api {
   private static instance: Api;
@@ -11,6 +12,8 @@ export default class Api {
   private housesApi!: HousesApi;
 
   private usersApi!: UsersApi;
+
+  private eventsApi!: EventsApi;
 
   private axios!: AxiosInstance;
 
@@ -29,6 +32,7 @@ export default class Api {
     this.authApi = new AuthApi(this.axios);
     this.housesApi = new HousesApi(this.axios);
     this.usersApi = new UsersApi(this.axios);
+    this.eventsApi = new EventsApi(this.axios);
   }
 
   public setAccessToken(token: string): void {
@@ -58,5 +62,9 @@ export default class Api {
 
   public get users(): UsersApi {
     return this.usersApi;
+  }
+
+  public get events(): EventsApi {
+    return this.eventsApi;
   }
 }
