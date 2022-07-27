@@ -1,5 +1,5 @@
 import { SagaIterator } from "redux-saga";
-import { all, fork, put, takeLatest } from "redux-saga/effects";
+import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import { AxiosError } from "axios";
 import {
   runGetEvents,
@@ -12,6 +12,8 @@ import { TApiError } from "../../helpers/api/types/error.types";
 import Api from "../../helpers/api/main.api";
 import { TApiEvent } from "../../helpers/api/types/entities.types";
 import AlertService from "../../helpers/alertService/alertService";
+import { waitFor } from "../../helpers/saga/effects";
+import { isLoggedInSelector, isTokenExpiredSelector } from "../user";
 
 export function* eventsSaga(): SagaIterator<void> {
   yield all([fork(fetchEventsWatcher), fork(fetchEventsErrorWatcher)]);
@@ -28,6 +30,9 @@ export function* fetchEventsErrorWatcher(): SagaIterator<void> {
 export function* fetchEventsWorker({
   payload,
 }: ReturnType<typeof runGetEvents>) {
+  yield call(waitFor, isLoggedInSelector);
+  yield call(waitFor, (state: any) => !isTokenExpiredSelector(state));
+
   yield all([
     put(setGetEventsRequestStarted(true)),
     put(setGetEventsRequestFinished(false)),
