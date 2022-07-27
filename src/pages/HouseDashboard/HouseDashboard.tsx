@@ -1,16 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Container, Grid } from "@mui/material";
-import {
-  THouseDashboardProps,
-  THouseDashboardStateProps,
-} from "./HouseDashboard.types";
-import { TRootState } from "../../redux/store";
+import { THouseDashboardProps } from "./HouseDashboard.types";
 import HouseDashboardSidebar from "../../components/HouseDashboardSidebar/HouseDashboardSidebar";
 
-const HouseDashboard: React.FC<THouseDashboardProps> = (
-  props: THouseDashboardProps
-): React.ReactElement => {
+const HouseDashboard: React.FC<
+  THouseDashboardProps
+> = (): // props: THouseDashboardProps
+React.ReactElement => {
   return (
     <Container sx={{ mt: 2 }} maxWidth={"xl"}>
       <Grid container spacing={3}>
@@ -23,6 +20,6 @@ const HouseDashboard: React.FC<THouseDashboardProps> = (
   );
 };
 
-const mapStateToProps = (state: TRootState): THouseDashboardStateProps => ({});
+// const mapStateToProps = (state: TRootState): THouseDashboardStateProps => ({});
 
-export default connect(mapStateToProps)(HouseDashboard);
+export default connect()(HouseDashboard);
