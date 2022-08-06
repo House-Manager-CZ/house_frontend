@@ -143,6 +143,8 @@ export function* loginWorker({ payload }: ReturnType<typeof runLogin>) {
     }
 
     yield put(setLoginRequestFinished(true));
+
+    yield put(runGetMeInfo());
   } catch (e: unknown) {
     const error = <AxiosError<TApiError>>e;
 
