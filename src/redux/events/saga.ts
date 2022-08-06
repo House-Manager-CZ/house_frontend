@@ -14,6 +14,8 @@ import { TApiEvent } from "../../helpers/api/types/entities.types";
 import AlertService from "../../helpers/alertService/alertService";
 import { waitFor } from "../../helpers/saga/effects";
 import { isLoggedInSelector, isTokenExpiredSelector } from "../user";
+import { TRootState } from "../store";
+import { selectedHouseSelector } from "../houses";
 
 export function* eventsSaga(): SagaIterator<void> {
   yield all([fork(fetchEventsWatcher), fork(fetchEventsErrorWatcher)]);
@@ -32,6 +34,10 @@ export function* fetchEventsWorker({
 }: ReturnType<typeof runGetEvents>) {
   yield call(waitFor, isLoggedInSelector);
   yield call(waitFor, (state: any) => !isTokenExpiredSelector(state));
+  yield call(
+    waitFor,
+    (state: TRootState) => selectedHouseSelector(state) !== false
+  );
 
   yield all([
     put(setGetEventsRequestStarted(true)),

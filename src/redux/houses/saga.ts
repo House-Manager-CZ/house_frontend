@@ -5,10 +5,12 @@ import {
   delay,
   fork,
   put,
+  select,
   take,
   takeLatest,
 } from "redux-saga/effects";
 import { AxiosError } from "axios";
+import { some } from "lodash";
 import {
   ACTION_TYPES,
   runCreateHouseRequest,
@@ -38,7 +40,10 @@ import { isLoggedInSelector, isTokenExpiredSelector } from "../user";
 import { waitFor } from "../../helpers/saga/effects";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/localStorage/consts";
 import { runGetEvents } from "../events";
-import { getHousesRequestLoadingSelector } from "./selectors";
+import {
+  getHousesRequestLoadingSelector,
+  selectedHouseIdSelector,
+} from "./selectors";
 
 export function* housesSaga(): SagaIterator<void> {
   yield all([
@@ -104,6 +109,12 @@ export function* fetchHousesWorker() {
     yield put(setHouses(houses));
 
     yield put(setGetHousesRequestFinished(true));
+
+    const selectedHouseId: string = yield select(selectedHouseIdSelector);
+
+    if (!some(houses, { id: selectedHouseId })) {
+      yield put(setSelectedHouseId(false));
+    }
   } catch (e: unknown) {
     const error = <AxiosError<TApiError>>e;
 
@@ -229,16 +240,18 @@ export function* deleteHouseWorker({
 export function* setSelectedHouseWorker({
   payload,
 }: ReturnType<typeof setSelectedHouseId>): SagaIterator<void> {
-  yield call(
-    [localStorage, localStorage.setItem],
-    LOCAL_STORAGE_KEYS.SELECTED_HOUSE_ID,
-    payload
-  );
+  if (payload) {
+    yield call(
+      [localStorage, localStorage.setItem],
+      LOCAL_STORAGE_KEYS.SELECTED_HOUSE_ID,
+      payload
+    );
 
-  yield put(
-    runGetEvents({
-      house: payload,
-      direction: "upcoming",
-    })
-  );
+    yield put(
+      runGetEvents({
+        house: payload,
+        direction: "upcoming",
+      })
+    );
+  }
 }
