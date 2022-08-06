@@ -10,6 +10,7 @@ const HousesPage: React.FC<any> = (): React.ReactElement => {
       <HousesTable
         actions={{
           [HOUSE_TABLE_ACTIONS.ADD]: true,
+          [HOUSE_TABLE_ACTIONS.EDIT]: true,
           [HOUSE_TABLE_ACTIONS.DELETE]: true,
           [HOUSE_TABLE_ACTIONS.REFRESH]: true,
         }}
