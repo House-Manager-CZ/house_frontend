@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { Add, Refresh } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import ButtonLink from "../../ui/ButtonLink/ButtonLink";
 import { APP_ROUTES } from "../../helpers/routing";
 import useHousesTable from "./useHousesTable";
@@ -42,6 +43,8 @@ const HousesTable: React.FC<THousesTableProps> = (
   const { actions, houses, selectedHouseId, housesLoading } = props;
 
   const { handleRefreshClick, handleSelectHouseClick } = useHousesTable(props);
+
+  const navigate = useNavigate();
 
   const {
     deleteId: deleteHouseId,
@@ -93,6 +96,21 @@ const HousesTable: React.FC<THousesTableProps> = (
                   <TableCell>{house.members.length}</TableCell>
                   <TableCell>
                     <Stack direction={"row"} spacing={1}>
+                      {actions[HOUSE_TABLE_ACTIONS.EDIT] && (
+                        <Button
+                          variant={"text"}
+                          onClick={() =>
+                            navigate(
+                              `${APP_ROUTES.EDIT_HOUSE.replace(
+                                ":id",
+                                house.id
+                              )}`
+                            )
+                          }
+                        >
+                          Edit
+                        </Button>
+                      )}
                       {actions[HOUSE_TABLE_ACTIONS.DELETE] && (
                         <Button
                           variant={"text"}
