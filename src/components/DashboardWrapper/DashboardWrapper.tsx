@@ -193,7 +193,7 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
             )}
             {userInfo ? (
               <Tooltip title={userInfo.email}>
-                <DashboardUserInfoUsername variant={"body1"}>
+                <DashboardUserInfoUsername variant={"caption"}>
                   {userInfo.email}
                 </DashboardUserInfoUsername>
               </Tooltip>
