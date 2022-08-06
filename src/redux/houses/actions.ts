@@ -53,7 +53,7 @@ export const setHouses = createAction<Array<TApiHouse>>(
   ACTION_TYPES.SET_HOUSES
 );
 
-export const setSelectedHouseId = createAction<string>(
+export const setSelectedHouseId = createAction<string | false>(
   ACTION_TYPES.SET_SELECTED_HOUSE_ID
 );
 
