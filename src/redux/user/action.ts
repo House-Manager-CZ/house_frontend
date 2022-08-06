@@ -7,6 +7,7 @@ export const ACTION_TYPES = {
   RUN_LOGIN: `${moduleName}/RUN_LOGIN`,
   RUN_REFRESH: `${moduleName}/RUN_REFRESH`,
   RUN_REGISTER: `${moduleName}/RUN_REGISTER`,
+  RUN_LOGOUT: `${moduleName}/RUN_LOGOUT`,
   RUN_GET_ME_INFO: `${moduleName}/RUN_GET_ME_INFO`,
   SET_ACCESS_TOKEN: `${moduleName}/SET_ACCESS_TOKEN`,
   SET_REFRESH_TOKEN: `${moduleName}/SET_REFRESH_TOKEN`,
@@ -34,6 +35,8 @@ export const runRegister = createAction<TFetchRegisterAction>(
   ACTION_TYPES.RUN_REGISTER
 );
 
+export const runLogout = createAction<void>(ACTION_TYPES.RUN_LOGOUT);
+
 export const runGetMeInfo = createAction<void>(ACTION_TYPES.RUN_GET_ME_INFO);
 
 export const setAccessToken = createAction<string | false>(
@@ -48,7 +51,9 @@ export const setExpires = createAction<number | false>(
   ACTION_TYPES.SET_EXPIRES
 );
 
-export const setUserInfo = createAction<TApiUser>(ACTION_TYPES.SET_USER_INFO);
+export const setUserInfo = createAction<TApiUser | false>(
+  ACTION_TYPES.SET_USER_INFO
+);
 
 export const setLoginRequestStarted = createAction<boolean>(
   ACTION_TYPES.SET_LOGIN_REQUEST_STARTED

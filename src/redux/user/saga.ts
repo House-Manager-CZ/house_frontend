@@ -5,6 +5,7 @@ import * as Sentry from "@sentry/react";
 import {
   runGetMeInfo,
   runLogin,
+  runLogout,
   runRefresh,
   runRegister,
   setAccessToken,
@@ -41,6 +42,7 @@ export function* userSaga(): SagaIterator<void> {
     fork(registerWatcher),
     fork(tokenWatcher),
     fork(expiresWatcher),
+    fork(logoutWatcher),
     fork(getMeInfoWatcher),
   ]);
 }
@@ -68,6 +70,10 @@ export function* tokenWatcher(): SagaIterator<void> {
 
 export function* expiresWatcher(): SagaIterator<void> {
   yield takeLatest(setExpires, expiresWorker);
+}
+
+export function* logoutWatcher(): SagaIterator<void> {
+  yield takeLatest(runLogout, logoutWorker);
 }
 
 export function* getMeInfoWatcher(): SagaIterator<void> {
@@ -255,6 +261,31 @@ export function* expiresWorker({ payload }: ReturnType<typeof setExpires>) {
     [localStorage, localStorage.setItem],
     LOCAL_STORAGE_KEYS.EXPIRES,
     `${payload}`
+  );
+}
+
+export function* logoutWorker() {
+  yield all([
+    put(setAccessToken(false)),
+    put(setRefreshToken(false)),
+    put(setExpires(false)),
+    put(setUserInfo(false)),
+  ]);
+  yield call(
+    [localStorage, localStorage.removeItem],
+    LOCAL_STORAGE_KEYS.ACCESS_TOKEN
+  );
+  yield call(
+    [localStorage, localStorage.removeItem],
+    LOCAL_STORAGE_KEYS.REFRESH_TOKEN
+  );
+  yield call(
+    [localStorage, localStorage.removeItem],
+    LOCAL_STORAGE_KEYS.EXPIRES
+  );
+  yield call(
+    [localStorage, localStorage.removeItem],
+    LOCAL_STORAGE_KEYS.USER_DATA
   );
 }
 
