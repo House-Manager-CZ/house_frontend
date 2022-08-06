@@ -1,12 +1,20 @@
 import { createAction } from "@reduxjs/toolkit";
 import { moduleName } from "./module";
 import { TApiHouse } from "../../helpers/api/types/entities.types";
-import { THouseApiCreateData } from "../../helpers/api/houses.api";
-import { THouseCreateError, THouseDeleteError } from "./types/houses.schema";
+import {
+  THouseApiCreateData,
+  THouseApiEditData,
+} from "../../helpers/api/houses.api";
+import {
+  THouseCreateError,
+  THouseDeleteError,
+  THouseEditError,
+} from "./types/houses.schema";
 
 export const ACTION_TYPES = {
   RUN_GET_HOUSES_REQUEST: `${moduleName}/RUN_GET_HOUSES_REQUEST`,
   RUN_CREATE_HOUSE_REQUEST: `${moduleName}/RUN_CREATE_HOUSE_REQUEST`,
+  RUN_EDIT_HOUSE_REQUEST: `${moduleName}/RUN_EDIT_HOUSE_REQUEST`,
   RUN_DELETE_HOUSE_REQUEST: `${moduleName}/RUN_DELETE_HOUSE_REQUEST`,
   SET_HOUSES: `${moduleName}/SET_HOUSES`,
   SET_SELECTED_HOUSE_ID: `${moduleName}/SET_SELECTED_HOUSE_ID`,
@@ -16,6 +24,9 @@ export const ACTION_TYPES = {
   SET_CREATE_HOUSE_REQUEST_STARTED: `${moduleName}/SET_CREATE_HOUSE_REQUEST_STARTED`,
   SET_CREATE_HOUSE_REQUEST_FINISHED: `${moduleName}/SET_CREATE_HOUSE_REQUEST_FINISHED`,
   SET_CREATE_HOUSE_REQUEST_ERROR: `${moduleName}/SET_CREATE_HOUSE_REQUEST_ERROR`,
+  SET_EDIT_HOUSE_REQUEST_STARTED: `${moduleName}/SET_EDIT_HOUSE_REQUEST_STARTED`,
+  SET_EDIT_HOUSE_REQUEST_FINISHED: `${moduleName}/SET_EDIT_HOUSE_REQUEST_FINISHED`,
+  SET_EDIT_HOUSE_REQUEST_ERROR: `${moduleName}/SET_EDIT_HOUSE_REQUEST_ERROR`,
   SET_DELETE_HOUSE_REQUEST_STARTED: `${moduleName}/SET_DELETE_HOUSE_REQUEST_STARTED`,
   SET_DELETE_HOUSE_REQUEST_FINISHED: `${moduleName}/SET_DELETE_HOUSE_REQUEST_FINISHED`,
   SET_DELETE_HOUSE_REQUEST_ERROR: `${moduleName}/SET_DELETE_HOUSE_REQUEST_ERROR`,
@@ -28,6 +39,11 @@ export const runGetHousesRequest = createAction<void>(
 export const runCreateHouseRequest = createAction<THouseApiCreateData>(
   ACTION_TYPES.RUN_CREATE_HOUSE_REQUEST
 );
+
+export const runEditHouseRequest = createAction<{
+  id: string;
+  data: THouseApiEditData;
+}>(ACTION_TYPES.RUN_EDIT_HOUSE_REQUEST);
 
 export const runDeleteHouseRequest = createAction<string>(
   ACTION_TYPES.RUN_DELETE_HOUSE_REQUEST
@@ -64,6 +80,18 @@ export const setCreateHouseRequestFinished = createAction<boolean>(
 export const setCreateHouseRequestError = createAction<
   THouseCreateError | false
 >(ACTION_TYPES.SET_CREATE_HOUSE_REQUEST_ERROR);
+
+export const setEditHouseRequestStarted = createAction<boolean>(
+  ACTION_TYPES.SET_EDIT_HOUSE_REQUEST_STARTED
+);
+
+export const setEditHouseRequestFinished = createAction<boolean>(
+  ACTION_TYPES.SET_EDIT_HOUSE_REQUEST_FINISHED
+);
+
+export const setEditHouseRequestError = createAction<THouseEditError | false>(
+  ACTION_TYPES.SET_EDIT_HOUSE_REQUEST_ERROR
+);
 
 export const setDeleteHouseRequestStarted = createAction<boolean>(
   ACTION_TYPES.SET_DELETE_HOUSE_REQUEST_STARTED

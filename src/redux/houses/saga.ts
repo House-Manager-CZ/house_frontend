@@ -13,6 +13,7 @@ import {
   ACTION_TYPES,
   runCreateHouseRequest,
   runDeleteHouseRequest,
+  runEditHouseRequest,
   runGetHousesRequest,
   setCreateHouseRequestError,
   setCreateHouseRequestFinished,
@@ -20,6 +21,9 @@ import {
   setDeleteHouseRequestError,
   setDeleteHouseRequestFinished,
   setDeleteHouseRequestStarted,
+  setEditHouseRequestError,
+  setEditHouseRequestFinished,
+  setEditHouseRequestStarted,
   setGetHousesRequestError,
   setGetHousesRequestFinished,
   setGetHousesRequestStarted,
@@ -41,6 +45,7 @@ export function* housesSaga(): SagaIterator<void> {
     fork(initSaga),
     fork(fetchHousesWatcher),
     fork(createHouseWatcher),
+    fork(editHouseWatcher),
     fork(deleteHouseWatcher),
     fork(setSelectedHouseWatcher),
   ]);
@@ -69,6 +74,10 @@ export function* fetchHousesWatcher(): SagaIterator<void> {
 
 export function* createHouseWatcher(): SagaIterator<void> {
   yield takeLatest(runCreateHouseRequest, createHouseWorker);
+}
+
+export function* editHouseWatcher(): SagaIterator<void> {
+  yield takeLatest(runEditHouseRequest, editHouseWorker);
 }
 
 export function* deleteHouseWatcher(): SagaIterator<void> {
@@ -141,6 +150,44 @@ export function* createHouseWorker({
     yield put(setCreateHouseRequestStarted(false));
     yield delay(0);
     yield put(setCreateHouseRequestFinished(false));
+  }
+}
+
+export function* editHouseWorker({
+  payload,
+}: ReturnType<typeof runEditHouseRequest>) {
+  const { id, data } = payload;
+
+  yield all([
+    put(setEditHouseRequestStarted(true)),
+    put(setEditHouseRequestFinished(false)),
+    put(setEditHouseRequestError(false)),
+  ]);
+
+  try {
+    yield Api.getInstance().houses.editHouse(id, data);
+
+    yield put(runGetHousesRequest());
+
+    yield take(ACTION_TYPES.SET_GET_HOUSES_REQUEST_FINISHED);
+    yield take(ACTION_TYPES.SET_GET_HOUSES_REQUEST_FINISHED);
+
+    yield put(setEditHouseRequestFinished(true));
+  } catch (e: unknown) {
+    const error = <AxiosError<TApiError>>e;
+
+    yield put(
+      setEditHouseRequestError({
+        title: error.response?.data?.message || "Can't edit house",
+        message:
+          Object.values(error.response?.data?.errors?.[0] || {})[0] ||
+          "Unknown error",
+      })
+    );
+  } finally {
+    yield put(setEditHouseRequestStarted(false));
+    yield delay(0);
+    yield put(setEditHouseRequestFinished(false));
   }
 }
 
