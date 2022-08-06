@@ -1,4 +1,12 @@
-import { AppBar, Box, Drawer, styled, Toolbar } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Drawer,
+  Stack,
+  styled,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
 export const drawerWidth = 240;
 
@@ -24,6 +32,16 @@ export const DashboardDrawer = styled(Drawer)({
     width: drawerWidth,
     boxSizing: "border-box",
   },
+});
+
+export const DashboardUserInfoStack = styled(Stack)({
+  width: "75%",
+});
+
+export const DashboardUserInfoUsername = styled(Typography)({
+  width: "100%",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 });
 
 export const DashboardContainer = styled(Box)(({ theme }) => ({

@@ -3,6 +3,7 @@ import { UserSchema } from "./schema";
 import {
   runGetMeInfo,
   runLogin,
+  runLogout,
   runRefresh,
   runRegister,
   setAccessToken,
@@ -28,6 +29,7 @@ export default createReducer(UserSchema, (builder) => {
     .addCase(runLogin, () => {})
     .addCase(runRefresh, () => {})
     .addCase(runRegister, () => {})
+    .addCase(runLogout, () => {})
     .addCase(runGetMeInfo, () => {})
     .addCase(setAccessToken, (state, action) => {
       state.accessToken = action.payload;

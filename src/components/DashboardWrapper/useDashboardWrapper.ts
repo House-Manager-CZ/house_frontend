@@ -12,6 +12,7 @@ const useDashboardWrapper = ({
   setSelectedHouseId,
 }: TDashboardWrapperProps): TDashboardWrapperHook => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(true);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
   const [currentHouse, setCurrentHouse] = useState<TApiHouse | false>(false);
   const [housesMenuAnchorEl, setHousesMenuAnchorEl] =
     useState<null | HTMLElement>(null);
@@ -39,6 +40,10 @@ const useDashboardWrapper = ({
     setIsDrawerOpen(false);
   }, []);
 
+  const handleUserMenuIconClick = useCallback(() => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  }, [isUserMenuOpen]);
+
   const handleHousesButtonClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       setHousesMenuAnchorEl(e.currentTarget);
@@ -62,10 +67,12 @@ const useDashboardWrapper = ({
   return {
     housesMenuAnchorEl,
     isDrawerOpen,
+    isUserMenuOpen,
     currentHouse,
     isHousesMenuOpen,
     handleMenuIconClick,
     handleDrawerClose,
+    handleUserMenuIconClick,
     handleHousesButtonClick,
     handleHousesMenuClose,
     handleHousesMenuItemClick,
