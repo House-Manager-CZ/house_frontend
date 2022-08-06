@@ -8,6 +8,8 @@ export type THouseApiCreateData = {
   members: Array<number>;
 };
 
+export type THouseApiEditData = Partial<THouseApiCreateData>;
+
 export default class HousesApi extends BaseApi {
   public async getHouses(): Promise<Array<TApiHouse>> {
     const response = await this.axios.get<Array<TApiHouse>>("/houses");
@@ -20,6 +22,19 @@ export default class HousesApi extends BaseApi {
       AxiosResponse<TApiHouse>,
       THouseApiCreateData
     >("/houses", data);
+
+    return response.data;
+  }
+
+  public async editHouse(
+    id: string,
+    data: THouseApiEditData
+  ): Promise<TApiHouse> {
+    const response = await this.axios.put<
+      TApiHouse,
+      AxiosResponse<TApiHouse>,
+      THouseApiEditData
+    >(`/houses/${id}`, data);
 
     return response.data;
   }
