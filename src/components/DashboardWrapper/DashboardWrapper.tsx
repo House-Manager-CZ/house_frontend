@@ -2,20 +2,23 @@ import React from "react";
 import { connect } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import {
-  Avatar,
   Box,
   Button,
+  Collapse,
   Divider,
+  Icon,
   IconButton,
   List,
+  ListItemButton,
   ListItemIcon,
+  ListItemSecondaryAction,
   ListItemText,
   Menu,
   MenuItem,
   Skeleton,
-  Stack,
   Theme,
   Toolbar,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -23,11 +26,18 @@ import {
   Apartment,
   ArrowDropDown,
   Dashboard,
+  ExpandLess,
+  ExpandMore,
+  Logout,
   Menu as MenuIcon,
   Settings,
 } from "@mui/icons-material";
 import { TAppDispatch, TRootState } from "../../redux/store";
-import { isLoggedInSelector } from "../../redux/user";
+import {
+  isLoggedInSelector,
+  runLogout,
+  userInfoSelector,
+} from "../../redux/user";
 import {
   TDashboardWrapperDispatchProps,
   TDashboardWrapperProps,
@@ -38,6 +48,8 @@ import {
   DashboardContainer,
   DashboardContainerToolbar,
   DashboardDrawer,
+  DashboardUserInfoStack,
+  DashboardUserInfoUsername,
   DashboardWrapperBox,
 } from "./DashboardWrapper.styled";
 import useDashboardWrapper from "./useDashboardWrapper";
@@ -51,21 +63,24 @@ import { TApiHouse } from "../../helpers/api/types/entities.types";
 import MenuItemLink from "../../ui/MenuItemLink/MenuItemLink";
 import NotificationStack from "../NotificationStack/NotificationStack";
 import ListItemButtonLink from "../../ui/ListItemButtonLink/ListItemButtonLink";
+import TextSkeleton from "../../ui/TextSkeleton/TextSkeleton";
 
 const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   props: TDashboardWrapperProps
 ): React.ReactElement => {
-  const { isLogged, selectedHouseId, houses } = props;
+  const { isLogged, selectedHouseId, houses, userInfo, logout } = props;
 
   const { pathname } = useLocation();
 
   const {
     housesMenuAnchorEl,
     isDrawerOpen,
+    isUserMenuOpen,
     currentHouse,
     isHousesMenuOpen,
     handleMenuIconClick,
     handleDrawerClose,
+    handleUserMenuIconClick,
     handleHousesButtonClick,
     handleHousesMenuClose,
     handleHousesMenuItemClick,
@@ -154,12 +169,66 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
         onClose={handleDrawerClose}
       >
         <Toolbar>
-          <Avatar sx={{ mr: 2 }} />
-          <Stack direction={"column"}>
-            <Typography variant={"body1"}>User</Typography>
-            <Typography variant={"caption"}>email</Typography>
-          </Stack>
+          <DashboardUserInfoStack>
+            {userInfo ? (
+              <Tooltip
+                title={
+                  userInfo.first_name && userInfo.last_name
+                    ? `${userInfo.first_name} ${userInfo.last_name}`
+                    : userInfo.username
+                }
+              >
+                <DashboardUserInfoUsername variant={"body1"}>
+                  {userInfo.first_name && userInfo.last_name
+                    ? `${userInfo.first_name} ${userInfo.last_name}`
+                    : userInfo.username}
+                </DashboardUserInfoUsername>
+              </Tooltip>
+            ) : (
+              <TextSkeleton
+                variant={"text"}
+                animation={"wave"}
+                textVariant={"body1"}
+              />
+            )}
+            {userInfo ? (
+              <Tooltip title={userInfo.email}>
+                <DashboardUserInfoUsername variant={"body1"}>
+                  {userInfo.email}
+                </DashboardUserInfoUsername>
+              </Tooltip>
+            ) : (
+              <TextSkeleton
+                variant={"text"}
+                animation={"wave"}
+                textVariant={"body1"}
+              />
+            )}
+          </DashboardUserInfoStack>
+          <Box flexGrow={1} />
+          <IconButton size={"small"} onClick={handleUserMenuIconClick}>
+            {isUserMenuOpen ? <ExpandLess /> : <ExpandMore />}
+          </IconButton>
         </Toolbar>
+        <Collapse in={isUserMenuOpen} timeout={"auto"}>
+          <>
+            <List disablePadding>
+              <ListItemButton onClick={logout}>
+                <ListItemText
+                  primary={
+                    <Typography variant={"subtitle2"}>Logout</Typography>
+                  }
+                />
+                <ListItemSecondaryAction>
+                  <Icon>
+                    <Logout />
+                  </Icon>
+                </ListItemSecondaryAction>
+              </ListItemButton>
+            </List>
+            <Divider />
+          </>
+        </Collapse>
         <List>
           <ListItemButtonLink to={appRoutes.HOME.path}>
             <ListItemIcon>
@@ -188,11 +257,13 @@ const mapStateToProps = (state: TRootState): TDashboardWrapperStateProps => ({
   isLogged: isLoggedInSelector(state),
   selectedHouseId: selectedHouseIdSelector(state),
   houses: housesSelector(state),
+  userInfo: userInfoSelector(state),
 });
 
 const mapDispatchToProps = (
   dispatch: TAppDispatch
 ): TDashboardWrapperDispatchProps => ({
+  logout: () => dispatch(runLogout()),
   setSelectedHouseId: (houseId: string) =>
     dispatch(setSelectedHouseId(houseId)),
 });
