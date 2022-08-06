@@ -12,10 +12,18 @@ import { AxiosError } from "axios";
 import {
   ACTION_TYPES,
   runCreateHouseRequest,
+  runDeleteHouseRequest,
+  runEditHouseRequest,
   runGetHousesRequest,
   setCreateHouseRequestError,
   setCreateHouseRequestFinished,
   setCreateHouseRequestStarted,
+  setDeleteHouseRequestError,
+  setDeleteHouseRequestFinished,
+  setDeleteHouseRequestStarted,
+  setEditHouseRequestError,
+  setEditHouseRequestFinished,
+  setEditHouseRequestStarted,
   setGetHousesRequestError,
   setGetHousesRequestFinished,
   setGetHousesRequestStarted,
@@ -30,12 +38,15 @@ import { isLoggedInSelector, isTokenExpiredSelector } from "../user";
 import { waitFor } from "../../helpers/saga/effects";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/localStorage/consts";
 import { runGetEvents } from "../events";
+import { getHousesRequestLoadingSelector } from "./selectors";
 
 export function* housesSaga(): SagaIterator<void> {
   yield all([
     fork(initSaga),
     fork(fetchHousesWatcher),
     fork(createHouseWatcher),
+    fork(editHouseWatcher),
+    fork(deleteHouseWatcher),
     fork(setSelectedHouseWatcher),
   ]);
 }
@@ -63,6 +74,14 @@ export function* fetchHousesWatcher(): SagaIterator<void> {
 
 export function* createHouseWatcher(): SagaIterator<void> {
   yield takeLatest(runCreateHouseRequest, createHouseWorker);
+}
+
+export function* editHouseWatcher(): SagaIterator<void> {
+  yield takeLatest(runEditHouseRequest, editHouseWorker);
+}
+
+export function* deleteHouseWatcher(): SagaIterator<void> {
+  yield takeLatest(runDeleteHouseRequest, deleteHouseWorker);
 }
 
 export function* setSelectedHouseWatcher(): SagaIterator<void> {
@@ -131,6 +150,79 @@ export function* createHouseWorker({
     yield put(setCreateHouseRequestStarted(false));
     yield delay(0);
     yield put(setCreateHouseRequestFinished(false));
+  }
+}
+
+export function* editHouseWorker({
+  payload,
+}: ReturnType<typeof runEditHouseRequest>) {
+  const { id, data } = payload;
+
+  yield all([
+    put(setEditHouseRequestStarted(true)),
+    put(setEditHouseRequestFinished(false)),
+    put(setEditHouseRequestError(false)),
+  ]);
+
+  try {
+    yield Api.getInstance().houses.editHouse(id, data);
+
+    yield put(runGetHousesRequest());
+
+    yield take(ACTION_TYPES.SET_GET_HOUSES_REQUEST_FINISHED);
+    yield take(ACTION_TYPES.SET_GET_HOUSES_REQUEST_FINISHED);
+
+    yield put(setEditHouseRequestFinished(true));
+  } catch (e: unknown) {
+    const error = <AxiosError<TApiError>>e;
+
+    yield put(
+      setEditHouseRequestError({
+        title: error.response?.data?.message || "Can't edit house",
+        message:
+          Object.values(error.response?.data?.errors?.[0] || {})[0] ||
+          "Unknown error",
+      })
+    );
+  } finally {
+    yield put(setEditHouseRequestStarted(false));
+    yield delay(0);
+    yield put(setEditHouseRequestFinished(false));
+  }
+}
+
+export function* deleteHouseWorker({
+  payload,
+}: ReturnType<typeof runDeleteHouseRequest>) {
+  yield all([
+    put(setDeleteHouseRequestStarted(true)),
+    put(setDeleteHouseRequestFinished(false)),
+    put(setDeleteHouseRequestError(false)),
+  ]);
+
+  try {
+    yield Api.getInstance().houses.deleteHouse(payload);
+
+    yield put(runGetHousesRequest());
+    yield delay(0);
+    yield call(waitFor, (state) => !getHousesRequestLoadingSelector(state));
+
+    yield put(setDeleteHouseRequestFinished(true));
+  } catch (e: unknown) {
+    const error = <AxiosError<TApiError>>e;
+
+    yield put(
+      setDeleteHouseRequestError({
+        title: error.response?.data?.message || "Can't delete house",
+        message:
+          Object.values(error.response?.data?.errors?.[0] || {})[0] ||
+          "Unknown error",
+      })
+    );
+  } finally {
+    yield put(setDeleteHouseRequestStarted(false));
+    yield delay(0);
+    yield put(setDeleteHouseRequestFinished(false));
   }
 }
 

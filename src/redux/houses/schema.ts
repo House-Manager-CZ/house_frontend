@@ -9,4 +9,10 @@ export const HousesSchema: THousesSchema = {
   createHouseRequestStarted: false,
   createHouseRequestFinished: false,
   createHouseRequestError: false,
+  editHouseRequestStarted: false,
+  editHouseRequestFinished: false,
+  editHouseRequestError: false,
+  deleteHouseRequestStarted: false,
+  deleteHouseRequestFinished: false,
+  deleteHouseRequestError: false,
 };

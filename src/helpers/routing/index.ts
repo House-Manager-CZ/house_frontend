@@ -2,11 +2,15 @@ import React from "react";
 import ChooseHousePage from "../../pages/ChooseHousePage/ChooseHousePage";
 import AddHousePage from "../../pages/AddHousePage/AddHousePage";
 import HouseDashboard from "../../pages/HouseDashboard/HouseDashboard";
+import HousesPage from "../../pages/HousesPage/HousesPage";
+import EditHousePage from "../../pages/EditHousePage/EditHousePage";
 
 export enum APP_ROUTES {
   HOME = "/",
+  HOUSES = "/houses",
   CHOOSE_HOUSE = "/choose-house",
   ADD_HOUSE = "/add-house",
+  EDIT_HOUSE = "/edit-house/:id",
   LOGIN = "/auth/login",
   REGISTER = "/auth/register",
 }
@@ -27,6 +31,11 @@ export const appRoutes: Omit<TAppRoute, "LOGIN" | "REGISTER"> = {
     readableName: "Home",
     component: HouseDashboard,
   },
+  HOUSES: {
+    path: APP_ROUTES.HOUSES,
+    readableName: "Houses",
+    component: HousesPage,
+  },
   CHOOSE_HOUSE: {
     path: APP_ROUTES.CHOOSE_HOUSE,
     readableName: "Choose House",
@@ -36,5 +45,10 @@ export const appRoutes: Omit<TAppRoute, "LOGIN" | "REGISTER"> = {
     path: APP_ROUTES.ADD_HOUSE,
     readableName: "Add House",
     component: AddHousePage,
+  },
+  EDIT_HOUSE: {
+    path: APP_ROUTES.EDIT_HOUSE,
+    readableName: "Edit House",
+    component: EditHousePage,
   },
 };

@@ -8,8 +8,6 @@ import {
   Divider,
   IconButton,
   List,
-  ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -169,14 +167,12 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
             </ListItemIcon>
             <ListItemText primary={"Dashboard"} />
           </ListItemButtonLink>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Apartment />
-              </ListItemIcon>
-              <ListItemText primary={"Houses"} secondary={"some house name"} />
-            </ListItemButton>
-          </ListItem>
+          <ListItemButtonLink to={appRoutes.HOUSES.path}>
+            <ListItemIcon>
+              <Apartment />
+            </ListItemIcon>
+            <ListItemText primary={"Houses"} secondary={"some house name"} />
+          </ListItemButtonLink>
         </List>
       </DashboardDrawer>
       <DashboardContainer>

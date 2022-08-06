@@ -1,17 +1,17 @@
 import React from "react";
-import { connect } from "react-redux";
 import { Container, Stack, Typography } from "@mui/material";
+import { connect } from "react-redux";
 import HouseForm from "../../components/HouseForm/HouseForm";
 
-const AddHousePage: React.FC = (): React.ReactElement => {
+const EditHousePage: React.FC = (): React.ReactElement => {
   return (
     <Container sx={{ mt: 2 }}>
       <Stack spacing={3}>
-        <Typography variant={"h5"}>Add house</Typography>
-        <HouseForm mode={"add"} />
+        <Typography variant={"h5"}>Edit house</Typography>
+        <HouseForm mode={"edit"} />
       </Stack>
     </Container>
   );
 };
 
-export default connect()(AddHousePage);
+export default connect()(EditHousePage);

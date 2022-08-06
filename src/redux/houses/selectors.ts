@@ -88,3 +88,71 @@ export const createHouseRequestFailedSelector = createSelector(
   (state: THousesSchema) =>
     !state.createHouseRequestStarted && !!state.createHouseRequestError
 );
+
+export const editHouseRequestStartedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.editHouseRequestStarted
+);
+
+export const editHouseRequestFinishedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.editHouseRequestFinished
+);
+
+export const editHouseRequestErrorSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.editHouseRequestError
+);
+
+export const editHouseRequestLoadingSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    state.editHouseRequestStarted &&
+    !(state.editHouseRequestFinished || state.editHouseRequestError)
+);
+
+export const editHouseRequestSuccessSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    !state.editHouseRequestStarted && state.editHouseRequestFinished
+);
+
+export const editHouseRequestFailedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    !state.editHouseRequestStarted && !!state.editHouseRequestError
+);
+
+export const deleteHouseRequestStartedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.deleteHouseRequestStarted
+);
+
+export const deleteHouseRequestFinishedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.deleteHouseRequestFinished
+);
+
+export const deleteHouseRequestErrorSelector = createSelector(
+  housesState,
+  (state: THousesSchema) => state.deleteHouseRequestError
+);
+
+export const deleteHouseRequestLoadingSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    state.deleteHouseRequestStarted &&
+    !(state.deleteHouseRequestFinished || state.deleteHouseRequestError)
+);
+
+export const deleteHouseRequestSuccessSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    !state.deleteHouseRequestStarted && state.deleteHouseRequestFinished
+);
+
+export const deleteHouseRequestFailedSelector = createSelector(
+  housesState,
+  (state: THousesSchema) =>
+    !state.deleteHouseRequestStarted && !!state.deleteHouseRequestError
+);
