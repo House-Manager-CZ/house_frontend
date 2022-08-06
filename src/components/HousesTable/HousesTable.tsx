@@ -34,20 +34,21 @@ import {
 } from "../../redux/houses";
 import { TApiHouse } from "../../helpers/api/types/entities.types";
 import DeleteHouseModal from "../DeleteHouseModal/DeleteHouseModal";
+import useDeleteHouseModal from "../DeleteHouseModal/useDeleteHouseModal";
 
 const HousesTable: React.FC<THousesTableProps> = (
   props: THousesTableProps
 ): React.ReactElement => {
   const { actions, houses, selectedHouseId, housesLoading } = props;
 
+  const { handleRefreshClick, handleSelectHouseClick } = useHousesTable(props);
+
   const {
-    handleRefreshClick,
-    handleSelectHouseClick,
-    deleteHouseId,
-    isDeleteModalOpen,
-    handleDeleteModalOpen,
-    handleDeleteModalClose,
-  } = useHousesTable(props);
+    deleteId: deleteHouseId,
+    isModalOpen: isDeleteModalOpen,
+    handleOpen: handleDeleteModalOpen,
+    handleClose: handleDeleteModalClose,
+  } = useDeleteHouseModal();
 
   return (
     <>

@@ -28,8 +28,4 @@ export type THousesTableProps = THousesTableStateProps &
 export type THousesTableHook = {
   handleRefreshClick: () => void;
   handleSelectHouseClick: (id: string) => void;
-  deleteHouseId: string | false;
-  isDeleteModalOpen: boolean;
-  handleDeleteModalOpen: (houseId?: string) => void;
-  handleDeleteModalClose: () => void;
 };
