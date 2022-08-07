@@ -6,6 +6,10 @@ COPY package.json .
 COPY yarn.lock .
 COPY tsconfig.json .
 
+ARG REACT_APP_API_URL
+ARG REACT_APP_SENTRY_DSN
+ARG REACT_APP_MAPBOX_TOKEN
+
 RUN yarn install
 
 COPY . .
