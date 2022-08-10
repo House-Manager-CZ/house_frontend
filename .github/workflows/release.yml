@@ -80,5 +80,5 @@ jobs:
           git config --local user.name "GitHub Action"
           git commit -am "Set frontend image to ${{ github.event.release.tag_name }}"
       - name: Push changes
-        run: git push origin master
+        run: git push -u origin master
 
