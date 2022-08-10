@@ -73,7 +73,7 @@ jobs:
       - name: Update Kubernetes resources
         run: |
           cd frontend
-          kustomize edit set image housemanager/frontend:${{ github.event.release.tag_name }}
+          kustomize edit set image frontend-image=housemanager/frontend:${{ github.event.release.tag_name }}
           cat kustomization.yaml
       - name: Commit files
         run: |
