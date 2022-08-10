@@ -65,6 +65,7 @@ jobs:
         with:
           repository: ${{ secrets.DEPLOYMENT_REPO }}
           ssh-key: ${{ secrets.DEPLOYMENT_REPO_SSH }}
+          persist-credentials: true
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
         with:
@@ -80,5 +81,8 @@ jobs:
           git config --local user.name "GitHub Action"
           git commit -am "Set frontend image to ${{ github.event.release.tag_name }}"
       - name: Push changes
-        run: git push -u origin master
+        uses: ad-m/github-push-action@master
+        with:
+          ssh: true
+          repository: ${{ secrets.DEPLOYMENT_REPO }}
 
