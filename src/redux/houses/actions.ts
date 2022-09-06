@@ -2,12 +2,10 @@ import { createAction } from "@reduxjs/toolkit";
 import { moduleName } from "./module";
 import { TApiHouse } from "../../helpers/api/types/entities.types";
 import {
-  THouseApiCreateData,
-  THouseApiEditData,
-} from "../../helpers/api/houses.api";
-import {
+  THouseCreateAction,
   THouseCreateError,
   THouseDeleteError,
+  THouseEditAction,
   THouseEditError,
 } from "./types/houses.schema";
 
@@ -36,14 +34,13 @@ export const runGetHousesRequest = createAction<void>(
   ACTION_TYPES.RUN_GET_HOUSES_REQUEST
 );
 
-export const runCreateHouseRequest = createAction<THouseApiCreateData>(
+export const runCreateHouseRequest = createAction<THouseCreateAction>(
   ACTION_TYPES.RUN_CREATE_HOUSE_REQUEST
 );
 
-export const runEditHouseRequest = createAction<{
-  id: string;
-  data: THouseApiEditData;
-}>(ACTION_TYPES.RUN_EDIT_HOUSE_REQUEST);
+export const runEditHouseRequest = createAction<THouseEditAction>(
+  ACTION_TYPES.RUN_EDIT_HOUSE_REQUEST
+);
 
 export const runDeleteHouseRequest = createAction<string>(
   ACTION_TYPES.RUN_DELETE_HOUSE_REQUEST
