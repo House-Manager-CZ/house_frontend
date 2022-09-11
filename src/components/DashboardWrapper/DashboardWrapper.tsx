@@ -271,6 +271,7 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
                 <List disablePadding>
                   {Object.values(houseSettingsRoutes).map((route) => (
                     <ListItemButtonLink
+                      key={route.path}
                       to={appRoutes.HOUSE_SETTINGS.path.replace(
                         "*",
                         route.path
