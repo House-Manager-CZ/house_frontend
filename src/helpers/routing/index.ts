@@ -4,6 +4,7 @@ import AddHousePage from "../../pages/AddHousePage/AddHousePage";
 import HouseDashboard from "../../pages/HouseDashboard/HouseDashboard";
 import HousesPage from "../../pages/HousesPage/HousesPage";
 import EditHousePage from "../../pages/EditHousePage/EditHousePage";
+import HouseSettingsPage from "../../pages/HouseSettingsPage";
 
 export enum APP_ROUTES {
   HOME = "/",
@@ -11,6 +12,7 @@ export enum APP_ROUTES {
   CHOOSE_HOUSE = "/choose-house",
   ADD_HOUSE = "/add-house",
   EDIT_HOUSE = "/edit-house/:id",
+  HOUSE_SETTINGS = "/house-settings/*",
   LOGIN = "/auth/login",
   REGISTER = "/auth/register",
 }
@@ -55,5 +57,10 @@ export const appRoutes: Omit<TAppRoute, "LOGIN" | "REGISTER"> = {
     path: APP_ROUTES.EDIT_HOUSE,
     readableName: "Edit House",
     component: EditHousePage,
+  },
+  HOUSE_SETTINGS: {
+    path: APP_ROUTES.HOUSE_SETTINGS,
+    readableName: "House Settings",
+    component: HouseSettingsPage,
   },
 };
