@@ -64,6 +64,7 @@ import MenuItemLink from "../../ui/MenuItemLink/MenuItemLink";
 import NotificationStack from "../NotificationStack/NotificationStack";
 import ListItemButtonLink from "../../ui/ListItemButtonLink/ListItemButtonLink";
 import TextSkeleton from "../../ui/TextSkeleton/TextSkeleton";
+import { houseSettingsRoutes } from "../../helpers/routing/house-settings";
 
 const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
   props: TDashboardWrapperProps
@@ -242,6 +243,49 @@ const DashboardWrapper: React.FC<TDashboardWrapperProps> = (
             </ListItemIcon>
             <ListItemText primary={"Houses"} secondary={"some house name"} />
           </ListItemButtonLink>
+          {selectedHouseId && (
+            <>
+              <ListItemButtonLink
+                to={appRoutes.HOUSE_SETTINGS.path.replace(
+                  "*",
+                  houseSettingsRoutes.GENERAL.path
+                )}
+                selected={
+                  pathname.indexOf(
+                    appRoutes.HOUSE_SETTINGS.path.split("/")[1]
+                  ) !== -1
+                }
+              >
+                <ListItemIcon>
+                  <Settings />
+                </ListItemIcon>
+                <ListItemText primary={"Settings"} />
+              </ListItemButtonLink>
+              <Collapse
+                in={
+                  pathname.indexOf(
+                    appRoutes.HOUSE_SETTINGS.path.split("/")[1]
+                  ) !== -1
+                }
+              >
+                <List disablePadding>
+                  {Object.values(houseSettingsRoutes).map((route) => (
+                    <ListItemButtonLink
+                      key={route.path}
+                      to={appRoutes.HOUSE_SETTINGS.path.replace(
+                        "*",
+                        route.path
+                      )}
+                      sx={{ pl: 6 }}
+                      selected={pathname.endsWith(route.path)}
+                    >
+                      <ListItemText primary={route.title} />
+                    </ListItemButtonLink>
+                  ))}
+                </List>
+              </Collapse>
+            </>
+          )}
         </List>
       </DashboardDrawer>
       <DashboardContainer>

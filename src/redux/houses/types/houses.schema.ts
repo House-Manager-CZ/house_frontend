@@ -1,4 +1,15 @@
 import { TApiHouse } from "../../../helpers/api/types/entities.types";
+import {
+  THouseApiCreateData,
+  THouseApiEditData,
+} from "../../../helpers/api/houses.api";
+
+export type THouseCreateAction = THouseApiCreateData;
+
+export type THouseEditAction = {
+  id: string;
+  data: THouseApiEditData;
+};
 
 export type THouseCreateError = {
   title: string;
