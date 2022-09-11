@@ -3,6 +3,7 @@ import { TRouteDetails } from "./index";
 
 export enum E_HOUSE_SETTINGS_ROUTES {
   GENERAL = "general",
+  MEMBERS = "members",
 }
 
 export type THouseSettingsRouteDetails<
@@ -25,5 +26,14 @@ export const houseSettingsRoutes: THouseSettingsRoute = {
     ),
     title: "General",
     description: "General settings for your house",
+  },
+  MEMBERS: {
+    path: E_HOUSE_SETTINGS_ROUTES.MEMBERS,
+    readableName: "Members",
+    component: React.lazy(
+      () => import("../../components/settings/house/MembersSettings")
+    ),
+    title: "Members",
+    description: "Manage members of your house",
   },
 };
