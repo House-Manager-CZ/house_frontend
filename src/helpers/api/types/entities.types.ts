@@ -19,7 +19,7 @@ export type TApiUserSearchKey = `${number}${number}${number}${number}`;
 export type TApiUser = {
   id: number;
   status: TEntityStatus;
-  status_key: TApiUserSearchKey;
+  search_key: TApiUserSearchKey;
   search_name: `${string}#${TApiUserSearchKey}`;
   username: string;
   email: string;
